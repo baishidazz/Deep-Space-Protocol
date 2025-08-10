@@ -1,261 +1,301 @@
 <!doctype html>
 <html lang="en" data-theme="light">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Deep Space Protocol — Command-grade Liquidity, Zero-Lag Execution</title>
-  <meta name="description" content="Deep Space Protocol (DSP) is a premium crypto exchange launched in July 2025. Institutional trust, open access. Spot, Perpetuals, and Earn with SOC2-aligned controls.">
-  <meta name="robots" content="index,follow">
-  <!-- Open Graph -->
-  <meta property="og:title" content="Deep Space Protocol">
-  <meta property="og:description" content="Launched July 2025. Institutional trust, open access.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://example.com/">
-  <meta property="og:image" content="https://example.com/og-image.png">
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Deep Space Protocol">
-  <meta name="twitter:description" content="Launched July 2025. Institutional trust, open access.">
-  <meta name="twitter:image" content="https://example.com/og-image.png">
-  <!-- Colors -->
-  <meta name="theme-color" content="#0B0D17">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deep Space Protocol — Command-grade Liquidity, Zero-lag Execution</title>
+  <meta name="description" content="Deep Space Protocol (DSP) is a premium crypto exchange launched in July 2025. Institutional trust, open access. Spot, Perpetuals, Earn, and developer-first APIs." />
+  <meta name="theme-color" content="#F7FAFF" />
   <style>
-    /* -------------------------------
-       Design Tokens & Theme
-    --------------------------------*/
+    /* ===============================
+       Tokens — light first (bright UI)
+    =============================== */
     :root{
-      --bg: #f7f8fb;
-      --surface: #ffffffcc;
-      --text: #0b0d17;
-      --muted: #5b6275;
-      --primary: #0B0D17;
-      --accent: #FFD166; /* accessible gold */
-      --accent-ink:#1f1f1f;
-      --outline:#dbe0ea;
-      --glass: rgba(255,255,255,0.65);
-      --blur: 14px;
-      --radius: 18px;
-      --shadow: 0 10px 30px rgba(15, 18, 30, .10);
-      --container: 1280px;
-      --focus: 2px solid #5B9DFF;
-      --code-bg:#0f1220;
-      --code-ink:#dce2ff;
+      --page-bg:
+        radial-gradient(1200px 600px at 20% -10%, #D7E7FF66, transparent 70%),
+        radial-gradient(1000px 520px at 110% -20%, #B8F7E85A, transparent 70%),
+        radial-gradient(1200px 520px at -15% 120%, #FFD0F05A, transparent 70%),
+        linear-gradient(180deg,#F7FAFF 0%, #EFF5FF 45%, #EAF2FF 100%);
+      --text:#0D1326;
+      --muted:#4B5877;
+      --surface:#FFFFFFEE;      /* glass on light */
+      --outline:#D6E2FF;
+      --radius:18px;
+      --blur:16px;
+      --shadow:0 24px 68px rgba(23,38,80,.12);
+      --container:1280px;
+      --focus:2px solid #2E6BFF;
+
+      /* multi-hue accent palette for text highlights */
+      --accent:#2E6BFF; /* blue */
+      --violet:#7C4DFF;
+      --teal:#12D6A0;
+      --pink:#FF57B3;
+      --gold:#FFB02E;
+
+      /* status strip */
+      --success-ink:#063218;
+      --success-dot:#22C55E;
+      --success-grad: linear-gradient(180deg,#E8FFF3,#F7FFF9);
+
+      /* cards/table/code */
+      --card-1:#FFFFFFF2;
+      --card-2:#F2F6FF;
+      --code-bg:#0B1226;
+      --code-ink:#DCE6FF;
     }
     html[data-theme="dark"]{
-      --bg:#0B0D17;
-      --surface:#0f1424cc;
-      --text:#f2f5ff;
-      --muted:#a9b1c7;
-      --primary:#dfe6ff;
-      --accent:#FFD166;
-      --accent-ink:#101319;
-      --outline:#202b42;
-      --glass: rgba(16,19,31,0.55);
-      --blur: 16px;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --code-bg:#0b0f1c;
-      --code-ink:#e9edff;
+      --page-bg:
+        radial-gradient(1200px 600px at 20% -10%, #5B9DFF40, transparent 70%),
+        radial-gradient(1000px 520px at 110% -20%, #2EE9A133, transparent 70%),
+        radial-gradient(1200px 520px at -15% 120%, #FF5EBC2E, transparent 70%),
+        linear-gradient(180deg,#0B1020 0%, #090F1D 45%, #0A0E1A 100%);
+      --text:#F2F7FF;
+      --muted:#A9B1C7;
+      --surface:#0F1428CC;      /* glass on dark */
+      --outline:#1A2747;
+      --shadow:0 26px 72px rgba(0,0,0,.55);
+      --success-ink:#9FF0C3;
+      --success-grad: linear-gradient(180deg,#0E2A1A,#0A1E14);
+      --card-1:#0D142AFF;
+      --card-2:#0B1226FF;
+      --code-bg:#0B0F1C;
+      --code-ink:#E9EDFF;
     }
-    @media (prefers-reduced-motion: reduce){
-      * { animation: none !important; transition: none !important; }
-    }
+    @media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+
     /* Base */
     *,*::before,*::after{ box-sizing:border-box }
     html,body{ height:100% }
     body{
-      margin:0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-      font-weight: 400;
-      line-height:1.6;
-      color:var(--text);
-      background: radial-gradient(1200px 600px at 10% -10%, #dfe6ff40, transparent 70%),
-                  radial-gradient(900px 500px at 90% -20%, #ffd16630, transparent 65%),
-                  var(--bg);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      margin:0; color:var(--text);
+      font: 400 16px/1.6 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--page-bg) !important;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
     a{ color:inherit; text-decoration:none }
     img{ max-width:100%; height:auto }
     .container{ width:100%; max-width:var(--container); margin-inline:auto; padding-inline:24px }
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
-      height:44px; padding:0 18px; border-radius:999px; border:1px solid transparent;
-      font-weight:600; letter-spacing:.2px; cursor:pointer; transition:transform .2s, box-shadow .2s, background .2s;
-      user-select:none;
+
+    /* Status bar (like your screenshot) */
+    :root{ --status-h:38px }
+    .statusbar{
+      position:sticky; top:0; inset-inline:0; height:var(--status-h);
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      background: var(--success-grad); color:var(--success-ink);
+      border-bottom:1px solid rgba(0,0,0,.07);
+      z-index:1002; font-size:14px;
     }
-    .btn:focus-visible{ outline:var(--focus); outline-offset:2px }
-    .btn.primary{ background:var(--accent); color:var(--accent-ink); box-shadow:0 6px 18px rgba(255,209,102,.35) }
-    .btn.primary:hover{ transform:translateY(-1px) }
-    .btn.ghost{ background:transparent; border-color:var(--outline); color:var(--text) }
-    .btn.ghost:hover{ background: #ffffff18 }
-    .chip{ display:inline-flex; align-items:center; gap:.4rem; padding:.35rem .7rem; border-radius:999px; border:1px solid var(--outline); font-size:.85rem; color:var(--muted); background:linear-gradient(180deg, #fff7, #fff0) }
-    .glass{ background:var(--glass); backdrop-filter: blur(var(--blur)); box-shadow:var(--shadow); border:1px solid var(--outline); border-radius:var(--radius) }
-    .grid{ display:grid; gap:24px }
-    .grid-3{ grid-template-columns: repeat(3, minmax(0,1fr)) }
-    .grid-2{ grid-template-columns: repeat(2, minmax(0,1fr)) }
-    @media (max-width: 900px){ .grid-3{ grid-template-columns:1fr } .grid-2{ grid-template-columns:1fr } }
+    .statusbar .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #B6FBD7 0%, var(--success-dot) 60%);
+      box-shadow:0 0 0 2px rgba(34,197,94,.18), 0 0 14px rgba(34,197,94,.45);
+      display:inline-block; margin-right:6px;
+    }
+    .statusbar .sep{ opacity:.55; margin:0 6px }
+    .statusbar a{ color:inherit; font-weight:600; text-decoration: underline dotted 1px }
+    html[data-theme="dark"] .statusbar{ border-bottom:1px solid rgba(255,255,255,.06) }
 
-    /* Skip Link */
-    .skip{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
-    .skip:focus{ left:16px; top:16px; width:auto; height:auto; padding:8px 12px; z-index:9999; background:#fff; border-radius:8px; border:1px solid var(--outline); }
+    /* thin multi-color rail */
+    .accent-rail{
+      position:sticky; top:var(--status-h); height:3px; z-index:1001;
+      background: linear-gradient(90deg,var(--accent),var(--violet),var(--teal),var(--pink),var(--gold));
+      filter: saturate(1.2);
+    }
 
-    /* Navbar */
+    /* Nav (full menu kept) */
     .nav{
-      position:sticky; top:0; inset-inline:0; z-index:1000;
-      background: linear-gradient(180deg, var(--glass), transparent);
+      position:sticky; top:calc(var(--status-h) + 3px); inset-inline:0; z-index:1000;
+      background: color-mix(in oklab, #fff 55%, transparent);
       backdrop-filter: blur(10px);
       border-bottom:1px solid var(--outline);
     }
-    .nav-wrap{ display:flex; align-items:center; justify-content:space-between; padding:16px 0; }
-    .brand{ display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.4px }
-    .brand-badge{
-      width:36px; height:36px; display:grid; place-items:center; border-radius:10px; 
-      background: radial-gradient(100% 100% at 50% 0%, #ffd166, #ffbd4a 60%, #ffb23a);
-      color:#121212; font-weight:900; box-shadow:0 8px 18px rgba(255, 176, 58, .35);
+    html[data-theme="dark"] .nav{ background: color-mix(in oklab, #0b1226 65%, transparent); }
+    .nav-wrap{ display:flex; align-items:center; justify-content:space-between; padding:12px 0 }
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px }
+    .brand-dot{
+      width:24px; height:24px; border-radius:999px; display:grid; place-items:center;
+      background: radial-gradient(100% 100% at 50% 0%, #9ED1FF, var(--accent) 60%, #1F51FF);
+      box-shadow:inset 0 0 10px #fff6, 0 6px 16px rgba(46,107,255,.25);
     }
-    .nav-links{ display:flex; gap:18px; align-items:center; flex-wrap:wrap }
-    .nav-links a{ padding:8px 10px; border-radius:8px; color:var(--muted) }
-    .nav-links a.active, .nav-links a:hover{ color:var(--text); background:#ffffff26 }
-    .theme-toggle{ margin-left:12px }
+    .nav-links{ display:flex; gap:16px; align-items:center; flex-wrap:wrap }
+    .nav-links a{ padding:8px 10px; border-radius:8px; color:var(--muted); font-weight:600 }
+    .nav-links a.active, .nav-links a:hover{ color:var(--text); background:#0000000e }
+    html[data-theme="dark"] .nav-links a.active, html[data-theme="dark"] .nav-links a:hover{ background:#ffffff14;color:#F2F7FF }
+    .theme-toggle{ margin-left:8px }
+    .icon{ width:1.1em; height:1.1em; vertical-align:-2px }
+
+    /* Attention typography helpers (for “显眼的信息”) */
+    .ink-accent{ color:var(--accent) }
+    .ink-violet{ color:var(--violet) }
+    .ink-teal{ color:var(--teal) }
+    .ink-pink{ color:var(--pink) }
+    .ink-gold{ color:var(--gold) }
+    .g-text{
+      background: linear-gradient(90deg,var(--accent),var(--violet) 40%,var(--teal));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .hl{
+      --c1: color-mix(in oklab, var(--accent) 22%, white);
+      --c2: color-mix(in oklab, var(--accent) 0%, white);
+      background: linear-gradient(180deg,var(--c1),var(--c2));
+      border:1px solid var(--outline); padding:.2rem .5rem; border-radius:10px; font-weight:800;
+    }
 
     /* Hero */
-    .hero{
-      position:relative; overflow:hidden;
-      padding:96px 0 72px;
-      isolation:isolate;
-    }
-    #starfield{ position:absolute; inset:0; z-index:-1; }
+    .hero{ position:relative; overflow:hidden; padding:92px 0 72px; isolation:isolate }
+    #starfield{ position:absolute; inset:0; z-index:-1 }
     .hero-inner{ display:grid; gap:24px; grid-template-columns: 1.2fr .8fr; align-items:center }
-    @media (max-width: 1020px){ .hero-inner{ grid-template-columns:1fr } }
-    .headline{ font-size: clamp(28px, 4.2vw, 54px); line-height:1.1; font-weight:800; letter-spacing:.2px; margin:0 }
-    .subhead{ font-size: clamp(16px, 1.4vw, 19px); color:var(--muted); margin:8px 0 16px }
+    @media (max-width:1020px){ .hero-inner{ grid-template-columns:1fr } }
+    .headline{ font-size: clamp(30px, 4.2vw, 56px); line-height:1.05; font-weight:900; letter-spacing:-.02em; margin:0 }
+    .subhead{ font-size: clamp(16px, 1.4vw, 19px); color:var(--muted); margin:10px 0 18px }
     .cta-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:8px }
     .cred-bar{ display:flex; gap:10px; flex-wrap:wrap; margin-top:18px }
-    .cred-bar .chip{ background: linear-gradient(180deg, #fff3, #fff0); }
 
-    /* Cards & Sections */
+    /* UI atoms */
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+      height:44px; padding:0 18px; border-radius:999px; border:1px solid transparent;
+      font-weight:700; letter-spacing:.2px; cursor:pointer; user-select:none;
+      transition: transform .2s, box-shadow .2s, background .2s }
+    .btn:focus-visible{ outline:var(--focus); outline-offset:2px }
+    .btn.primary{ background:var(--accent); color:#fff; box-shadow:0 8px 24px rgba(46,107,255,.35) }
+    .btn.primary:hover{ transform:translateY(-1px) }
+    .btn.ghost{ background:transparent; border-color:var(--outline); color:var(--text) }
+    .btn.ghost:hover{ background:#0000000e }
+    html[data-theme="dark"] .btn.ghost:hover{ background:#ffffff14 }
+    .chip{ display:inline-flex; align-items:center; gap:.4rem; padding:.35rem .7rem; border-radius:999px; border:1px solid var(--outline); font-size:.85rem; color:var(--muted); background:linear-gradient(180deg, var(--card-2), var(--card-1)) }
+    .glass{ background:var(--surface); backdrop-filter: blur(var(--blur)); box-shadow:var(--shadow); border:1px solid var(--outline); border-radius:var(--radius) }
+
+    /* Sections / Cards */
     section{ padding:64px 0 }
-    .section-h{ font-size: clamp(22px, 2.6vw, 32px); margin:0 0 10px; font-weight:750 }
+    .section-h{ font-size: clamp(22px, 2.6vw, 32px); margin:0 0 10px; font-weight:800 }
     .section-p{ color:var(--muted); margin:0 0 22px }
-    .card{ padding:22px; border-radius:var(--radius); border:1px solid var(--outline); background:linear-gradient(180deg, #fff9, #fff6); box-shadow:var(--shadow) }
-    html[data-theme="dark"] .card{ background: linear-gradient(180deg, #0f1424cc, #0f1424aa) }
-    .card h3{ margin:4px 0 8px; font-size:1.15rem }
-    .card p{ color:var(--muted); margin:0 0 12px }
-    .card ul{ margin:0; padding-left:18px; color:var(--muted) }
-    .lift:hover{ transform: translateY(-2px) }
     .lift{ transition: transform .18s ease, box-shadow .18s ease }
+    .lift:hover{ transform: translateY(-2px) }
+    .card{ position:relative; padding:22px; background:linear-gradient(180deg, var(--card-1), var(--card-2)) }
+    .card::after{ content:""; position:absolute; inset:0; border-radius:var(--radius); pointer-events:none; box-shadow:inset 0 0 0 1px var(--outline) }
 
-    /* Metrics strip */
-    .metrics{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px }
-    .metric{ padding:18px; border-radius:14px; border:1px dashed var(--outline); background:linear-gradient(180deg,#fff6,#fff0) }
-    .metric .num{ font-variant-numeric: tabular-nums; font-weight:800; font-size:1.6rem }
-    .metric small{ color:var(--muted) }
-    @media (max-width: 900px){ .metrics{ grid-template-columns:1fr 1fr } }
+    /* Inputs */
+    input[type="text"], input[type="email"], input[type="password"]{
+      width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--outline); background:#fff; color:#111
+    }
+    html[data-theme="dark"] input[type="text"], html[data-theme="dark"] input[type="email"], html[data-theme="dark"] input[type="password"]{
+      background:#0f1428; color:#fff
+    }
+    label{ font-weight:700 }
 
-    /* Fees Table */
+    /* Tables */
     .table-wrap{ overflow:auto; border-radius:14px; border:1px solid var(--outline) }
-    table{ width:100%; border-collapse:separate; border-spacing:0; min-width:620px; background:linear-gradient(180deg,#fff9,#fff6) }
-    th, td{ padding:14px 16px; text-align:left; border-bottom:1px solid var(--outline) }
-    th{ position:sticky; top:0; background:linear-gradient(180deg,#fff,#f9fafc); font-weight:700; cursor:pointer }
-    tr:hover td{ background:#fffdf4 }
-    html[data-theme="dark"] tr:hover td{ background:#181e2d }
+    table{ width:100%; border-collapse:separate; border-spacing:0; min-width:620px; background:linear-gradient(180deg,var(--card-2),var(--card-1)) }
+    th, td{ padding:14px 16px; text-align:left; border-bottom:1px solid var(--outline); color:inherit }
+    th{ position:sticky; top:0; background:linear-gradient(180deg,var(--card-2),var(--card-1)); font-weight:800; cursor:pointer }
+    tr:hover td{ background:#00000008 }
+    html[data-theme="dark"] tr:hover td{ background:#ffffff0f }
+    .th-icon{ margin-left:6px; opacity:.6; transition:transform .2s ease }
+    th[data-order="asc"] .th-icon{ transform:rotate(180deg) }
     .note{ font-size:.92rem; color:var(--muted) }
 
-    /* Accordion */
-    details{ border:1px solid var(--outline); border-radius:12px; padding:14px 16px; background:linear-gradient(180deg,#fff9,#fff4) }
-    summary{ cursor:pointer; font-weight:600; outline:none }
-    summary:focus-visible{ outline:var(--focus); border-radius:8px }
-
-    /* Code */
-    pre{ background:var(--code-bg); color:var(--code-ink); padding:14px; border-radius:12px; overflow:auto }
-    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:.95rem }
+    /* Metrics */
+    .metrics{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px }
+    .metric{ padding:18px; border-radius:14px; border:1px dashed var(--outline); background:linear-gradient(180deg, var(--card-2), var(--card-1)) }
+    .metric .num{ font-variant-numeric: tabular-nums; font-weight:900; font-size:1.6rem }
+    @media (max-width:900px){ .metrics{ grid-template-columns:1fr 1fr } }
 
     /* Footer */
-    footer{ border-top:1px solid var(--outline); padding:36px 0 60px }
-    .cols{ display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap:24px }
+    footer{ border-top:1px solid var(--outline); padding:36px 0 60px; background:linear-gradient(180deg,var(--card-2),var(--card-1)) }
+    .cols{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:24px }
     .cols a{ color:var(--muted) }
     .legal{ margin-top:16px; color:var(--muted); font-size:.92rem }
-    @media (max-width: 900px){ .cols{ grid-template-columns:1fr 1fr } }
+    @media (max-width:900px){ .cols{ grid-template-columns:1fr 1fr } }
 
-    /* Fade-up animation */
+    /* Reveal */
     .reveal{ opacity:0; transform: translateY(12px); transition: opacity .6s ease, transform .6s ease }
     .reveal.show{ opacity:1; transform:none }
+    .skip{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden }
+    .skip:focus{ left:16px; top:16px; width:auto; height:auto; padding:8px 12px; z-index:9999; background:#10172a; color:#fff; border-radius:8px; border:1px solid var(--outline) }
   </style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type":"Organization",
-        "name":"Deep Space Protocol",
-        "url":"https://example.com/",
-        "logo":"https://example.com/logo.png",
-        "foundingDate":"2025-07-01",
-        "sameAs":[
-          "https://x.com/deepspaceprotocol",
-          "https://www.linkedin.com/company/deepspaceprotocol"
-        ]
-      },
-      {
-        "@type":"Product",
-        "name":"Deep Space Protocol Exchange",
-        "brand":{"@type":"Brand","name":"DSP"},
-        "releaseDate":"2025-07-01",
-        "description":"A crypto exchange for spot, perpetual futures, and earn products.",
-        "url":"https://example.com/"
-      }
-    ]
-  }
-  </script>
-  <!-- Analytics placeholder
-  <script>/* Insert GA/Plausible here */</script>
-  -->
 </head>
 <body>
-  <a class="skip" href="#main">Skip to content</a>
+  <!-- subtle grid for texture -->
+  <svg aria-hidden="true" style="position:fixed; inset:0; z-index:-1; opacity:.07; mix-blend-mode:multiply" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <defs><pattern id="grid24" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M 6 0 L 0 0 0 6" fill="none" stroke="#7890D8" stroke-width=".2"/></pattern></defs>
+    <rect width="100%" height="100%" fill="url(#grid24)"/>
+  </svg>
 
-  <!-- NAV -->
+  <!-- STATUS BAR -->
+  <div class="statusbar" role="status" aria-live="polite">
+    <span class="dot" aria-hidden="true"></span>
+    <strong>All systems operational</strong>
+    <span class="sep">—</span>
+    <span>90d uptime <b class="ink-teal">99.99%</b> <em>(demo)</em></span>
+    <span class="sep">·</span>
+    <a href="#status">View status</a>
+  </div>
+  <div class="accent-rail" aria-hidden="true"></div>
+
+  <!-- NAV (full) -->
   <nav class="nav" aria-label="Primary">
     <div class="container nav-wrap">
       <div class="brand">
-        <div class="brand-badge" aria-hidden="true">Δ</div>
-        <div aria-label="Deep Space Protocol logo wordmark">Deep Space Protocol</div>
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span aria-label="Deep Space Protocol">Deep Space Protocol</span>
       </div>
       <div class="nav-links">
         <a href="#products">Products</a>
         <a href="#fees">Fees</a>
         <a href="#security">Security</a>
-        <a href="#api">API</a>
+        <a href="#api" class="ink-accent" style="font-weight:800">API</a>
         <a href="#about">About</a>
         <a href="#careers">Careers</a>
         <a href="#blog">Blog</a>
         <a href="#support">Support</a>
-        <button class="btn ghost theme-toggle" type="button" aria-pressed="false" aria-label="Toggle dark mode">Dark mode</button>
+        <button class="btn ghost theme-toggle" type="button" aria-pressed="false" aria-label="Toggle theme">
+          <svg class="icon"><use id="theme-use" href="#icon-moon"></use></svg><span>Dark mode</span>
+        </button>
       </div>
     </div>
   </nav>
+
+  <!-- ICONS -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M20 12.5A8 8 0 1111.5 4a6.5 6.5 0 008.5 8.5z" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M17.3 6.7l2.1-2.1M4.6 19.4l2.1-2.1"/></g></symbol>
+    <symbol id="icon-spot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 13l3-3 3 3 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="icon-perp" viewBox="0 0 24 24"><path d="M4 16l6-8 4 5 6-8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 19h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="icon-earn" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v10M9 10h6M9 14h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="icon-apple" viewBox="0 0 24 24"><path d="M16.4 12.7c0-3.1 2.5-4.2 2.6-4.2-1.4-2-3.5-2.3-4.2-2.3-1.8-.2-3.5 1-4.4 1-1 0-2.5-1-4.1-.9-2.1.1-4.1 1.2-5.2 3-2.2 3.7-.6 9.2 1.5 12.2 1 1.4 2.1 2.9 3.6 2.9 1.4 0 1.9-.9 3.6-.9s2.1.9 3.6.9 2.3-1.4 3.2-2.8c1.1-1.6 1.5-3.2 1.5-3.3-.1 0-2.9-1.1-2.9-4.6z" fill="currentColor"/><path d="M14.8 4.6c.8-1 1.3-2.3 1.2-3.6-1.2.1-2.6.8-3.4 1.8-.7.9-1.3 2.2-1.1 3.5 1.3.1 2.6-.7 3.3-1.7z" fill="currentColor"/></symbol>
+    <symbol id="icon-play" viewBox="0 0 24 24"><path d="M3 2l18 10L3 22z" fill="currentColor"/></symbol>
+    <symbol id="icon-sort" viewBox="0 0 24 24"><path d="M8 10l4-4 4 4M8 14l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <a class="skip" href="#main">Skip to content</a>
 
   <!-- HERO -->
   <header class="hero" role="banner">
     <canvas id="starfield" aria-hidden="true"></canvas>
     <div class="container hero-inner">
       <div class="glass" style="padding:26px;">
-        <h1 class="headline">Command-grade liquidity. Zero-lag execution.</h1>
-        <p class="subhead">Deep Space Protocol (DSP) is a premium crypto exchange launched in <strong>July 2025</strong>. Institutional trust, open access, and developer-first APIs.</p>
+        <h1 class="headline">
+          <span class="g-text">Command-grade liquidity.</span>
+          <span class="ink-teal">Zero-lag execution.</span>
+        </h1>
+        <p class="subhead">
+          Deep Space Protocol (DSP) — a premium crypto exchange launched in
+          <span class="hl ink-accent">July 2025</span>. Institutional trust, open access, and developer-first APIs.
+        </p>
         <div class="cta-row">
           <a href="#signup" class="btn primary">Get Started</a>
           <a href="#fees" class="btn ghost">View Fees</a>
           <a href="#api" class="btn ghost">API Docs</a>
         </div>
         <div class="cred-bar" aria-label="Highlights">
-          <span class="chip">Launched Jul 2025</span>
-          <span class="chip">99.95% engine uptime <em>(demo)</em></span>
-          <span class="chip">SOC2-aligned controls <em>(demo)</em></span>
-          <span class="chip">Weekly Proof-of-Reserves <em>(demo)</em></span>
+          <span class="chip"><b class="ink-gold">SOC2</b>-aligned controls <em>(demo)</em></span>
+          <span class="chip"><b class="ink-teal">99.95%</b> engine uptime <em>(demo)</em></span>
+          <span class="chip"><b class="ink-violet">Weekly</b> Proof-of-Reserves <em>(demo)</em></span>
         </div>
       </div>
       <div class="glass lift" style="padding:22px;">
-        <h2 class="section-h" style="font-size:1.2rem;">Market snapshot <em>(demo)</em></h2>
+        <h2 class="section-h"><span class="ink-accent">Market</span> snapshot <em>(demo)</em></h2>
         <div class="table-wrap" role="region" aria-label="Markets table">
           <table aria-describedby="mkt-note">
             <thead>
@@ -266,9 +306,7 @@
                 <th scope="col" data-sort="num">24h Volume</th>
               </tr>
             </thead>
-            <tbody id="market-body">
-              <!-- populated by JS demo -->
-            </tbody>
+            <tbody id="market-body"></tbody>
           </table>
         </div>
         <p id="mkt-note" class="note">Demonstration data for visual purposes only.</p>
@@ -277,39 +315,47 @@
   </header>
 
   <main id="main">
+    <!-- SIGNUP -->
+    <section id="signup" class="container reveal">
+      <h2 class="section-h"><span class="ink-violet">Create</span> your DSP account</h2>
+      <p class="section-p">Demo sign-up. No data is sent anywhere.</p>
+      <form class="card" id="signup-form" onsubmit="return false;" aria-describedby="signup-note">
+        <div class="grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
+          <label>Email <input type="email" required placeholder="you@example.com" autocomplete="email"></label>
+          <label>Password <input type="password" required minlength="8" placeholder="********" autocomplete="new-password"></label>
+        </div>
+        <label style="display:flex; gap:10px; align-items:flex-start; margin-top:12px">
+          <input type="checkbox" required> <span>I agree to the <a href="#terms">Terms</a> and <a href="#privacy">Privacy</a>.</span>
+        </label>
+        <div class="cta-row">
+          <button class="btn primary" type="submit" id="signup-btn">Create demo account</button>
+          <span class="chip" id="signup-result" aria-live="polite"></span>
+        </div>
+      </form>
+      <p id="signup-note" class="note">This is a local demo only.</p>
+    </section>
+
     <!-- PRODUCTS -->
     <section id="products" class="container reveal">
       <h2 class="section-h">Products</h2>
-      <p class="section-p">Spot for simplicity, Perpetuals for precision, and Earn for long-term compounding. Built for disciplined operators and curious beginners alike.</p>
-      <div class="grid grid-3">
+      <p class="section-p">Spot for simplicity, <span class="ink-violet">Perpetuals</span> for precision, and <span class="ink-teal">Earn</span> for long-term compounding.</p>
+      <div class="grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
         <article class="card lift" aria-labelledby="prod-spot">
-          <h3 id="prod-spot">Spot</h3>
+          <h3 id="prod-spot"><svg class="icon"><use href="#icon-spot"></use></svg> <span class="ink-accent">Spot</span></h3>
           <p>Reliable order books, deep routing, and transparent fees. Market, limit, and TWAP <em>(demo)</em>.</p>
-          <ul>
-            <li>ISO-timestamped fills</li>
-            <li>Median execution &lt; 10ms <em>(demo)</em></li>
-            <li>Self-trade prevention</li>
-          </ul>
+          <ul><li>ISO-timestamped fills</li><li>Median execution &lt; <b class="ink-teal">10ms</b> <em>(demo)</em></li><li>Self-trade prevention</li></ul>
           <div style="margin-top:10px"><a class="btn ghost" href="#signup">Open account</a></div>
         </article>
         <article class="card lift" aria-labelledby="prod-perp">
-          <h3 id="prod-perp">Perpetuals</h3>
+          <h3 id="prod-perp"><svg class="icon"><use href="#icon-perp"></use></svg> <span class="ink-violet">Perpetuals</span></h3>
           <p>Low-latency matching with robust risk engine and auto-deleveraging guardrails <em>(demo)</em>.</p>
-          <ul>
-            <li>Cross/isolated margin</li>
-            <li>Dynamic funding <em>(demo)</em></li>
-            <li>Advanced triggers</li>
-          </ul>
+          <ul><li>Cross/isolated margin</li><li>Dynamic funding <em>(demo)</em></li><li>Advanced triggers</li></ul>
           <div style="margin-top:10px"><a class="btn ghost" href="#signup">Open account</a></div>
         </article>
         <article class="card lift" aria-labelledby="prod-earn">
-          <h3 id="prod-earn">Earn</h3>
-          <p>Staking and launchpool experiences with clarity around lockups and yields <em>(demo)</em>.</p>
-          <ul>
-            <li>Risk labels & disclosures</li>
-            <li>Auto-compound options</li>
-            <li>Flexible redemptions</li>
-          </ul>
+          <h3 id="prod-earn"><svg class="icon"><use href="#icon-earn"></use></svg> <span class="ink-teal">Earn</span></h3>
+          <p>Staking and launchpool with clear risk labels and disclosures <em>(demo)</em>.</p>
+          <ul><li>Auto-compound options</li><li>Flexible redemptions</li><li>Transparent yields</li></ul>
           <div style="margin-top:10px"><a class="btn ghost" href="#signup">Open account</a></div>
         </article>
       </div>
@@ -318,122 +364,86 @@
     <!-- METRICS -->
     <section class="container reveal" aria-label="Performance metrics">
       <div class="metrics">
-        <div class="metric">
-          <div class="num" data-counter data-suffix="%">99.95</div>
-          <small>Engine uptime <em>(demo)</em></small>
-        </div>
-        <div class="metric">
-          <div class="num" data-counter data-suffix="ms">10</div>
-          <small>Median execution latency <em>(demo)</em></small>
-        </div>
-        <div class="metric">
-          <div class="num" data-counter data-suffix="/wk">1</div>
-          <small>Proof-of-Reserves cadence <em>(demo)</em></small>
-        </div>
-        <div class="metric">
-          <div class="num" data-counter data-suffix="+">120</div>
-          <small>REST/WebSocket endpoints <em>(demo)</em></small>
-        </div>
+        <div class="metric"><div class="num ink-teal" data-counter data-suffix="%">99.95</div><small>Engine uptime <em>(demo)</em></small></div>
+        <div class="metric"><div class="num ink-accent" data-counter data-suffix="ms">10</div><small>Median execution latency <em>(demo)</em></small></div>
+        <div class="metric"><div class="num ink-violet" data-counter data-suffix="/wk">1</div><small>Proof-of-Reserves cadence <em>(demo)</em></small></div>
+        <div class="metric"><div class="num ink-pink" data-counter data-suffix="+">120</div><small>REST/WebSocket endpoints <em>(demo)</em></small></div>
       </div>
     </section>
 
     <!-- FEES -->
     <section id="fees" class="container reveal">
       <h2 class="section-h">Fees</h2>
-      <p class="section-p">Transparent maker/taker tiers calibrated for fairness. Volume windows reset daily <em>(demo)</em>.</p>
+      <p class="section-p">Transparent maker/taker tiers. Volume windows reset daily <em>(demo)</em>.</p>
       <div class="table-wrap" role="region" aria-label="Fees table">
         <table id="fees-table">
-          <thead>
-            <tr>
-              <th scope="col">Tier</th>
-              <th scope="col" data-sort="num">30d Volume (USD)</th>
-              <th scope="col" data-sort="num">Maker</th>
-              <th scope="col" data-sort="num">Taker</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Tier</th><th data-sort="num">30d Volume (USD)</th><th data-sort="num">Maker</th><th data-sort="num">Taker</th></tr></thead>
           <tbody>
-            <tr><td>Base</td><td>0</td><td>0.10%</td><td>0.12%</td></tr>
-            <tr><td>VIP 1</td><td>≥ 1M</td><td>0.08%</td><td>0.10%</td></tr>
-            <tr><td>VIP 2</td><td>≥ 10M</td><td>0.06%</td><td>0.08%</td></tr>
-            <tr><td>VIP 3</td><td>≥ 50M</td><td>0.03%</td><td>0.06%</td></tr>
-            <tr><td>VIP 4</td><td>≥ 100M</td><td>0.01%</td><td>0.04%</td></tr>
-            <tr><td>VIP 5</td><td>≥ 500M</td><td>0.00%</td><td>0.03%</td></tr>
+            <tr><td>Base</td><td>0</td><td>0.10%</td><td class="ink-pink">0.12%</td></tr>
+            <tr><td>VIP 1</td><td>&ge; 1,000,000</td><td>0.08%</td><td>0.10%</td></tr>
+            <tr><td>VIP 2</td><td>&ge; 10,000,000</td><td>0.06%</td><td>0.08%</td></tr>
+            <tr><td>VIP 3</td><td>&ge; 50,000,000</td><td class="ink-teal">0.03%</td><td>0.06%</td></tr>
+            <tr><td>VIP 4</td><td>&ge; 100,000,000</td><td>0.01%</td><td class="ink-accent">0.04%</td></tr>
+            <tr><td>VIP 5</td><td>&ge; 500,000,000</td><td class="ink-gold">0.00%</td><td class="ink-teal">0.03%</td></tr>
           </tbody>
         </table>
       </div>
       <p class="note">All numbers are <strong>demo data</strong>. Final fees may vary by product and jurisdiction.</p>
     </section>
 
-    <!-- SECURITY & COMPLIANCE -->
+    <!-- SECURITY -->
     <section id="security" class="container reveal">
-      <h2 class="section-h">Security & Compliance</h2>
-      <div class="grid grid-2">
-        <div class="card">
-          <h3>Custody</h3>
-          <p>Segregated wallets with majority cold storage and strict multi-sig policies. 24/7 key ceremonies and access rotation <em>(demo)</em>.</p>
-          <ul>
-            <li>92% cold / 8% warm <em>(demo)</em></li>
-            <li>Withdrawal risk checks</li>
-            <li>Hardware-backed HSM</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Compliance</h3>
-          <p>KYC/AML program aligned to global standards with ongoing sanctions screening. SOC2-aligned controls with Type II in-progress <em>(demo)</em>.</p>
-          <ul>
-            <li>KYB for institutions</li>
-            <li>Transaction monitoring</li>
-            <li>Travel Rule adapters <em>(demo)</em></li>
-          </ul>
-        </div>
+      <h2 class="section-h"><span class="ink-pink">Security</span> & Compliance</h2>
+      <div class="grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px">
+        <div class="card"><h3>Custody</h3><p>Segregated wallets with majority cold storage and strict multi-sig policies. 24/7 key ceremonies and access rotation <em>(demo)</em>.</p><ul><li><b class="ink-teal">92%</b> cold / <b class="ink-pink">8%</b> warm <em>(demo)</em></li><li>Withdrawal risk checks</li><li>Hardware-backed HSM</li></ul></div>
+        <div class="card"><h3>Compliance</h3><p>KYC/AML program aligned to global standards with ongoing sanctions screening. <b class="ink-gold">SOC2</b>-aligned controls with Type II in progress <em>(demo)</em>.</p><ul><li>KYB for institutions</li><li>Transaction monitoring</li><li>Travel Rule adapters <em>(demo)</em></li></ul></div>
       </div>
       <div class="card" style="margin-top:16px">
-        <h3>Proof-of-Reserves</h3>
+        <h3>Proof of Reserves</h3>
         <p>Merkle-tree attestations anchored on-chain. Third-party verification published on a rolling basis <em>(demo)</em>.</p>
-        <details><summary>How does PoR work?</summary><p>Customer liabilities are anonymized and hashed as leaves in a Merkle tree. Verifiers recompute roots to ensure all balances are included without exposing identities.</p></details>
-        <details><summary>What about liabilities?</summary><p>We publish methods to independently validate both assets and liabilities to avoid partial attestations.</p></details>
+        <details><summary>How does PoR work?</summary><p>Customer liabilities are anonymized and hashed as leaves in a Merkle tree. Verifiers recompute roots to ensure inclusion without exposing identities.</p></details>
+        <details><summary>What about liabilities?</summary><p>We publish methods to validate both assets and liabilities to avoid partial attestations.</p></details>
         <details><summary>When are reports updated?</summary><p>Weekly, with historical snapshots retained for comparison <em>(demo)</em>.</p></details>
       </div>
     </section>
 
     <!-- API -->
     <section id="api" class="container reveal">
-      <h2 class="section-h">API for Builders</h2>
+      <h2 class="section-h"><span class="ink-accent">API</span> for Builders</h2>
       <p class="section-p">Consistent REST and streaming WebSocket designed for orchestration, not surprises.</p>
-      <div class="grid grid-2">
+      <div class="grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px">
         <div class="card">
-          <h3>REST (demo)</h3>
-          <pre><code>GET /api/v1/markets
+          <h3>REST <em>(demo)</em></h3>
+          <pre style="background:var(--code-bg);color:var(--code-ink)"><code>GET /api/v1/markets
 GET /api/v1/orders
 POST /api/v1/orders
 GET /api/v1/funding</code></pre>
-          <h3>WebSocket (demo)</h3>
-          <pre><code>wss://stream.dsp.example/ws
+          <h3>WebSocket <em>(demo)</em></h3>
+          <pre style="background:var(--code-bg);color:var(--code-ink)"><code>wss://stream.dsp.example/ws
 { "op":"subscribe", "channel":"book", "pair":"BTC-USD" }</code></pre>
         </div>
         <div class="card">
           <h3>Try it</h3>
-          <p>Generate a <em>demo</em> API key and copy to clipboard:</p>
+          <p>Generate a demo API key and copy to clipboard:</p>
           <div style="display:flex; gap:10px; flex-wrap:wrap">
             <button class="btn primary" type="button" id="gen-key">Generate demo key</button>
             <input id="api-key" type="text" readonly aria-label="Demo API key" class="glass" style="flex:1; padding:10px 12px; border-radius:12px; border:1px solid var(--outline)">
             <button class="btn ghost" type="button" id="copy-key">Copy</button>
           </div>
-          <p class="note">Rate limits <em>(demo)</em>: 1200 req/min REST, 50 streams/WebSocket.</p>
+          <p class="note">Rate limits <em>(demo)</em>: 1200 req/min REST, 50 streams WebSocket.</p>
           <h4 style="margin:14px 0 6px">cURL example</h4>
-          <pre><code>curl -H "Authorization: Bearer &lt;YOUR_DEMO_KEY&gt;" \
+          <pre style="background:var(--code-bg);color:var(--code-ink)"><code>curl -H "Authorization: Bearer &lt;YOUR_DEMO_KEY&gt;" \
   https://api.dsp.example/v1/markets</code></pre>
         </div>
       </div>
     </section>
 
-    <!-- MOBILE APPS -->
+    <!-- MOBILE -->
     <section class="container reveal">
-      <h2 class="section-h">Mobile Apps</h2>
+      <h2 class="section-h"><span class="ink-gold">Mobile</span> Apps</h2>
       <p class="section-p">Trade wherever you are. Scan to download (placeholder).</p>
-      <div class="grid grid-2">
-        <div class="card" style="display:flex; align-items:center; justify-content:center; min-height:260px; position:relative">
-          <!-- Simple device frame -->
+      <div class="grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px">
+        <div class="card" style="display:flex; align-items:center; justify-content:center; min-height:260px">
           <div style="width:220px; height:440px; border:10px solid #111; border-radius:28px; position:relative; background:#0d1220; box-shadow:0 18px 40px rgba(0,0,0,.35)">
             <div style="position:absolute; inset:10px; border-radius:18px; background:linear-gradient(180deg,#19213a, #0d1220)"></div>
             <div style="position:absolute; top:6px; left:50%; transform:translateX(-50%); width:70px; height:6px; background:#333; border-radius:20px"></div>
@@ -441,25 +451,17 @@ GET /api/v1/funding</code></pre>
         </div>
         <div class="card">
           <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center">
-            <!-- SVG badges -->
-            <a class="btn ghost" aria-label="Download on the App Store" href="#">
-              <!-- Apple badge placeholder -->
-               App Store
-            </a>
-            <a class="btn ghost" aria-label="Get it on Google Play" href="#">
-              ▶ Google Play
-            </a>
-            <div class="chip">iOS & Android</div>
+            <a class="btn ghost" aria-label="Download on the App Store" href="#"><svg class="icon" aria-hidden="true"><use href="#icon-apple"></use></svg>App Store</a>
+            <a class="btn ghost" aria-label="Get it on Google Play" href="#"><svg class="icon" aria-hidden="true"><use href="#icon-play"></use></svg>Google Play</a>
           </div>
           <div style="margin-top:16px; display:flex; gap:16px; align-items:center">
-            <!-- QR placeholder -->
             <svg width="84" height="84" role="img" aria-label="QR code placeholder">
-              <rect width="100%" height="100%" fill="#eaeef6" />
-              <rect x="8" y="8" width="20" height="20" fill="#1b2338"/>
-              <rect x="56" y="8" width="20" height="20" fill="#1b2338"/>
-              <rect x="8" y="56" width="20" height="20" fill="#1b2338"/>
-              <rect x="56" y="56" width="20" height="20" fill="#1b2338"/>
-              <rect x="24" y="24" width="36" height="36" fill="#1b2338"/>
+              <rect width="100%" height="100%" fill="#E6EEFF" />
+              <rect x="8" y="8" width="20" height="20" fill="#2E6BFF"/>
+              <rect x="56" y="8" width="20" height="20" fill="#2E6BFF"/>
+              <rect x="8" y="56" width="20" height="20" fill="#2E6BFF"/>
+              <rect x="56" y="56" width="20" height="20" fill="#2E6BFF"/>
+              <rect x="24" y="24" width="36" height="36" fill="#2E6BFF"/>
             </svg>
             <p class="note" style="margin:0">Scan to open download page (placeholder).</p>
           </div>
@@ -467,108 +469,58 @@ GET /api/v1/funding</code></pre>
       </div>
     </section>
 
-    <!-- ABOUT -->
+    <!-- ABOUT / BLOG / CAREERS / STATUS / SUPPORT / LEGAL -->
     <section id="about" class="container reveal">
       <h2 class="section-h">About Deep Space Protocol</h2>
-      <p class="section-p">Founded and launched in July 2025, DSP is built by exchange engineers, market makers, and compliance leads who care about reliability over hype. Our mission is to create an execution layer you can trust—open to individuals, robust for institutions.</p>
-      <div class="grid grid-3">
-        <div class="card">
-          <h3>Founding Story</h3>
-          <p>We started DSP after years of building matching engines and custody pipelines for large venues. We obsessed over clean APIs, realistic fees, and an honest safety model.</p>
-        </div>
-        <div class="card">
-          <h3>Values</h3>
-          <ul>
-            <li>Clarity over complexity</li>
-            <li>Security by design</li>
-            <li>Respect for time and capital</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Coverage</h3>
-          <p>Operations across multiple time zones with rolling support coverage <em>(demo)</em>.</p>
-          <div class="chip">UTC-5</div>
-          <div class="chip">UTC</div>
-          <div class="chip">UTC+8</div>
-        </div>
-      </div>
-      <div class="grid grid-3" style="margin-top:18px">
-        <div class="card"><h3>Founder A</h3><p>Exchange Engineering · Risk obsessed · Background in low-latency systems.</p></div>
-        <div class="card"><h3>Founder B</h3><p>Market Structure · Built market-making tools and inventory health checks.</p></div>
-        <div class="card"><h3>Founder C</h3><p>Compliance & Security · SOC frameworks, KYC/AML, and incident response.</p></div>
+      <p class="section-p">Founded and launched in July 2025, DSP is built by exchange engineers, market makers, and compliance leads who care about reliability over hype.</p>
+      <div class="grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
+        <div class="card"><h3 class="ink-accent">Founding Story</h3><p>We focused on clean APIs, realistic fees, and a clear safety model.</p></div>
+        <div class="card"><h3 class="ink-violet">Values</h3><ul><li>Clarity over complexity</li><li>Security by design</li><li>Respect for time and capital</li></ul></div>
+        <div class="card"><h3 class="ink-teal">Coverage</h3><p>Operations across multiple time zones with rolling support coverage <em>(demo)</em>.</p></div>
       </div>
     </section>
 
-    <!-- BLOG -->
     <section id="blog" class="container reveal">
       <h2 class="section-h">News & Updates</h2>
-      <div class="grid grid-3">
-        <article class="card lift">
-          <h3>DSP launches with Spot & Perps</h3>
-          <p class="note">July 02, 2025 · Updates</p>
-          <p>We opened our first markets with a focus on clear fees, robust custody, and API simplicity. Week-one learnings inside.</p>
-        </article>
-        <article class="card lift">
-          <h3>Proof-of-Reserves cadence</h3>
-          <p class="note">July 15, 2025 · Security</p>
-          <p>We adopted weekly attestations and explain how to verify your account’s inclusion.</p>
-        </article>
-        <article class="card lift">
-          <h3>WebSocket reliability notes</h3>
-          <p class="note">August 01, 2025 · API</p>
-          <p>A peek at our backpressure model and guidelines for resilient streaming clients.</p>
-        </article>
+      <div class="grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
+        <article class="card lift"><h3 class="ink-accent">DSP launches with Spot & Perps</h3><p class="note">July 02, 2025 · Updates</p><p>We opened our first markets with a focus on clear fees, robust custody, and API simplicity.</p></article>
+        <article class="card lift"><h3 class="ink-violet">Proof-of-Reserves cadence</h3><p class="note">July 15, 2025 · Security</p><p>We adopted weekly attestations and explain how to verify your account inclusion.</p></article>
+        <article class="card lift"><h3 class="ink-teal">WebSocket reliability notes</h3><p class="note">August 01, 2025 · API</p><p>A peek at our backpressure model and guidelines for resilient streaming clients.</p></article>
       </div>
     </section>
 
-    <!-- CAREERS -->
     <section id="careers" class="container reveal">
       <h2 class="section-h">Careers</h2>
-      <p class="section-p">We hire carefully and inclusively. If you’re thoughtful and enjoy crisp systems, let’s talk.</p>
-      <div class="grid grid-3">
-        <div class="card">
-          <h3>Risk Analyst</h3>
-          <p class="note">Remote · Full-time</p>
-          <p>Develop controls for withdrawals, credit limits, and liquidation pipelines.</p>
-          <a class="btn ghost" href="mailto:careers@example.com">Apply</a>
-        </div>
-        <div class="card">
-          <h3>Golang Exchange Engineer</h3>
-          <p class="note">Hybrid · Full-time</p>
-          <p>Build high-integrity services around matching, settlement, and events.</p>
-          <a class="btn ghost" href="mailto:careers@example.com">Apply</a>
-        </div>
-        <div class="card">
-          <h3>Design Systems Lead</h3>
-          <p class="note">Remote · Full-time</p>
-          <p>Own a component library with accessibility and performance at the core.</p>
-          <a class="btn ghost" href="mailto:careers@example.com">Apply</a>
-        </div>
+      <div class="grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
+        <div class="card"><h3>Risk Analyst</h3><p class="note">Remote · Full-time</p><p>Develop controls for withdrawals, credit limits, and liquidation pipelines.</p><a class="btn ghost" href="mailto:careers@example.com">Apply</a></div>
+        <div class="card"><h3>Golang Exchange Engineer</h3><p class="note">Hybrid · Full-time</p><p>Build high-integrity services around matching, settlement, and events.</p><a class="btn ghost" href="mailto:careers@example.com">Apply</a></div>
+        <div class="card"><h3>Design Systems Lead</h3><p class="note">Remote · Full-time</p><p>Own a component library with accessibility and performance at the core.</p><a class="btn ghost" href="mailto:careers@example.com">Apply</a></div>
       </div>
     </section>
 
-    <!-- SUPPORT -->
+    <section id="status" class="container reveal">
+      <h2 class="section-h">Platform Status <em>(demo)</em></h2>
+      <div class="metrics">
+        <div class="metric"><div class="num ink-teal">99.98%</div><small>90-day uptime</small></div>
+        <div class="metric"><div class="num ink-accent">0</div><small>Open incidents</small></div>
+        <div class="metric"><div class="num ink-violet">2</div><small>Planned maintenances</small></div>
+        <div class="metric"><div class="num ink-pink">&lt; 120ms</div><small>Global p95 API</small></div>
+      </div>
+    </section>
+
     <section id="support" class="container reveal">
       <h2 class="section-h">Support & Status</h2>
-      <div class="grid grid-3">
-        <div class="card">
-          <h3>Help Center</h3>
-          <p>Guides and troubleshooting articles to help you ship faster.</p>
-          <a class="btn ghost" href="#">Open Help Center</a>
-        </div>
-        <div class="card">
-          <h3>Status</h3>
-          <p>Transparent uptime, planned maintenance, and incident timelines <em>(demo)</em>.</p>
-          <a class="btn ghost" href="#">View Status</a>
-        </div>
-        <div class="card">
-          <h3>Security</h3>
-          <p>Report a vulnerability: <a href="mailto:security@example.com">security@example.com</a></p>
-          <a class="btn ghost" href="#">PGP Key</a>
-        </div>
+      <div class="grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
+        <div class="card"><h3>Help Center</h3><p>Guides and troubleshooting to help you ship faster.</p><a class="btn ghost" href="#support">Open Help Center</a></div>
+        <div class="card"><h3>Status</h3><p>Transparent uptime, maintenance, and incident timelines <em>(demo)</em>.</p><a class="btn ghost" href="#status">View Status</a></div>
+        <div class="card"><h3>Security</h3><p>Report a vulnerability: <a href="mailto:security@example.com">security@example.com</a></p><a class="btn ghost" href="#security">PGP Key</a></div>
       </div>
       <p class="note">SLA <em>(demo)</em>: best-effort response within 24 hours on business days.</p>
     </section>
+
+    <section id="terms" class="container reveal"><h2 class="section-h">Terms (Demo)</h2><div class="card"><p class="note">Placeholder terms for demonstration only. Replace with your legal content.</p></div></section>
+    <section id="privacy" class="container reveal"><h2 class="section-h">Privacy (Demo)</h2><div class="card"><p class="note">We do not collect any data on this demo page. Replace with your actual privacy policy.</p></div></section>
+    <section id="risk" class="container reveal"><h2 class="section-h">Risk Disclosure (Demo)</h2><div class="card"><p class="note">Digital asset prices are volatile. Do not trade with funds you cannot afford to lose.</p></div></section>
   </main>
 
   <!-- FOOTER -->
@@ -577,219 +529,142 @@ GET /api/v1/funding</code></pre>
       <div class="cols">
         <div>
           <div class="brand" style="margin-bottom:8px">
-            <div class="brand-badge" aria-hidden="true">Δ</div>
+            <span class="brand-dot" aria-hidden="true"></span>
             Deep Space Protocol
           </div>
           <p class="note">A premium crypto exchange launched in July 2025. Trading involves risk. Past performance is not indicative of future results.</p>
         </div>
-        <div>
-          <h4>Company</h4>
-          <a href="#about">About</a><br>
-          <a href="#careers">Careers</a><br>
-          <a href="#blog">News</a>
-        </div>
-        <div>
-          <h4>Resources</h4>
-          <a href="#api">API</a><br>
-          <a href="#fees">Fees</a><br>
-          <a href="#support">Support</a>
-        </div>
-        <div>
-          <h4>Legal</h4>
-          <a href="#">Terms</a><br>
-          <a href="#">Privacy</a><br>
-          <a href="#">Risk Disclosure</a><br>
-          <a href="#">Cookie Policy</a>
-        </div>
+        <div><h4>Company</h4><a href="#about">About</a><br><a href="#careers">Careers</a><br><a href="#blog">News</a></div>
+        <div><h4>Resources</h4><a href="#api">API</a><br><a href="#fees">Fees</a><br><a href="#support">Support</a></div>
+        <div><h4>Legal</h4><a href="#terms">Terms</a><br><a href="#privacy">Privacy</a><br><a href="#risk">Risk Disclosure</a><br><a href="#">Cookie Policy</a></div>
       </div>
-      <p class="legal">
-        Availability subject to jurisdiction. Not available in sanctioned regions. Users are responsible for their tax obligations. All metrics and figures marked “demo” are illustrative only. © 2025 Deep Space Protocol. All rights reserved.
-      </p>
+      <p class="legal">Availability subject to jurisdiction. Not available in sanctioned regions. Users are responsible for their tax obligations. All metrics marked “demo” are illustrative only. © 2025 Deep Space Protocol. All rights reserved.</p>
     </div>
   </footer>
 
   <script>
-    // -------------------------------
-    // Theme toggle (persisted)
-    // -------------------------------
+    // Theme toggle (works for whole page + icon swap)
     (function(){
       const btn = document.querySelector('.theme-toggle');
+      const label = btn.querySelector('span');
+      const use = document.getElementById('theme-use');
       const root = document.documentElement;
       const saved = localStorage.getItem('theme');
-      if(saved){ root.setAttribute('data-theme', saved); btn.setAttribute('aria-pressed', saved==='dark'); btn.textContent = saved==='dark' ? 'Light mode' : 'Dark mode'; }
+      if(saved){
+        root.setAttribute('data-theme', saved);
+        btn.setAttribute('aria-pressed', saved==='dark');
+        label.textContent = saved==='dark' ? 'Light mode' : 'Dark mode';
+        use?.setAttribute('href', saved==='dark' ? '#icon-sun' : '#icon-moon');
+      }
       btn.addEventListener('click', () => {
         const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         root.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);
         btn.setAttribute('aria-pressed', next==='dark');
-        btn.textContent = next==='dark' ? 'Light mode' : 'Dark mode';
+        label.textContent = next==='dark' ? 'Light mode' : 'Dark mode';
+        use?.setAttribute('href', next==='dark' ? '#icon-sun' : '#icon-moon');
       });
     })();
 
-    // -------------------------------
     // Smooth scroll & active link
-    // -------------------------------
     (function(){
       const links = document.querySelectorAll('.nav-links a[href^="#"]');
       links.forEach(a=>{
         a.addEventListener('click', (e)=>{
-          const id = a.getAttribute('href');
-          const el = document.querySelector(id);
-          if(!el) return;
-          e.preventDefault();
-          el.scrollIntoView({behavior: 'smooth', block:'start'});
-          links.forEach(l=>l.classList.remove('active'));
-          a.classList.add('active');
+          const id = a.getAttribute('href'), el = document.querySelector(id);
+          if(!el) return; e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'});
+          links.forEach(l=>l.classList.remove('active')); a.classList.add('active');
         });
       });
     })();
 
-    // -------------------------------
     // Reveal on scroll
-    // -------------------------------
     (function(){
-      const obs = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){ e.target.classList.add('show'); obs.unobserve(e.target); }
-        });
-      }, { threshold: 0.12 });
+      const obs = new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); obs.unobserve(e.target); } }); }, { threshold:.12 });
       document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
     })();
 
-    // -------------------------------
     // Demo market data
-    // -------------------------------
     (function(){
       const rows = [
-        ['BTC-USD', '67,420.12', '+1.24%', '$1,202,388,000'],
-        ['ETH-USD', '3,114.28', '-0.42%', '$624,115,000'],
-        ['SOL-USD', '154.77', '+2.10%', '$312,771,000'],
-        ['ATOM-USD', '9.12', '+0.30%', '$41,002,100']
+        ['BTC-USD','67,420.12','+1.24%','$1,202,388,000'],
+        ['ETH-USD','3,114.28','-0.42%','$624,115,000'],
+        ['SOL-USD','154.77','+2.10%','$312,771,000'],
+        ['ATOM-USD','9.12','+0.30%','$41,002,100']
       ];
       const tbody = document.getElementById('market-body');
-      rows.forEach(r=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td>`;
-        tbody.appendChild(tr);
-      });
+      rows.forEach(r=>{ const tr=document.createElement('tr'); tr.innerHTML = `<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td>`; tbody.appendChild(tr); });
     })();
 
-    // -------------------------------
-    // Counters (respect reduced motion)
-    // -------------------------------
+    // Counters
     (function(){
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
       const els = document.querySelectorAll('[data-counter]');
-      const run = () => {
-        els.forEach(el=>{
-          const suffix = el.dataset.suffix || '';
-          const target = parseFloat(el.textContent);
-          if (reduce) { el.textContent = target + suffix; return; }
-          let v = 0; const steps = 40; const inc = target/steps;
-          const t = setInterval(()=>{ v += inc; if(v >= target){ v = target; clearInterval(t); } el.textContent = (Math.round(v*100)/100) + suffix; }, 28);
-        });
-      };
-      const io = new IntersectionObserver(es => {
-        es.forEach(e=>{ if(e.isIntersecting){ run(); io.disconnect(); } });
-      }, {threshold:0.2});
-      if(els.length){ io.observe(els[0]); }
+      const run = () => els.forEach(el=>{
+        const suffix = el.dataset.suffix || '';
+        const target = parseFloat(el.textContent);
+        if(reduce){ el.textContent = target + suffix; return; }
+        let v=0, steps=40, inc=target/steps;
+        const t = setInterval(()=>{ v+=inc; if(v>=target){ v=target; clearInterval(t); } el.textContent = (Math.round(v*100)/100)+suffix; },28);
+      });
+      const io = new IntersectionObserver(e=>{ e.forEach(x=>{ if(x.isIntersecting){ run(); io.disconnect(); } }); }, {threshold:.2});
+      if(els.length) io.observe(els[0]);
     })();
 
-    // -------------------------------
-    // Sortable table (Fees)
-    // -------------------------------
+    // Sortable fees table
     (function(){
-      const table = document.getElementById('fees-table');
-      if(!table) return;
-      const parseNum = (s) => {
-        if(typeof s !== 'string') return s;
-        if(s.includes('%')) return parseFloat(s);
-        if(s.includes('≥')) return parseFloat(s.replace(/[^\d.]/g,''));
-        return parseFloat(s.replace(/[^\d.]/g,''));
-      };
-      table.querySelectorAll('th[data-sort]').forEach((th, idx)=>{
+      const table = document.getElementById('fees-table'); if(!table) return;
+      const parseNum = (s)=> typeof s!=='string' ? s : (s.includes('%')?parseFloat(s):parseFloat(s.replace(/[^\d.]/g,'')));
+      table.querySelectorAll('th[data-sort]').forEach((th,idx)=>{
+        th.innerHTML = th.textContent + ' <svg class="icon th-icon"><use href="#icon-sort"></use></svg>';
         th.addEventListener('click', ()=>{
-          const tbody = table.tBodies[0];
-          const rows = Array.from(tbody.rows);
-          const asc = th.dataset.order !== 'asc';
-          rows.sort((a,b)=>{
-            const A = parseNum(a.cells[idx].textContent);
-            const B = parseNum(b.cells[idx].textContent);
-            return asc ? A - B : B - A;
-          });
+          const body = table.tBodies[0], rows = Array.from(body.rows), asc = th.dataset.order !== 'asc';
+          rows.sort((a,b)=>{ const A=parseNum(a.cells[idx].textContent), B=parseNum(b.cells[idx].textContent); return asc?A-B:B-A; });
           th.dataset.order = asc ? 'asc' : 'desc';
-          rows.forEach(r=>tbody.appendChild(r));
+          table.querySelectorAll('th[data-sort]').forEach(h=>{ if(h!==th) h.removeAttribute('data-order'); });
+          rows.forEach(r=>body.appendChild(r));
         });
       });
     })();
 
-    // -------------------------------
-    // API key demo & copy
-    // -------------------------------
+    // Signup demo
     (function(){
-      const gen = document.getElementById('gen-key');
-      const input = document.getElementById('api-key');
-      const copy = document.getElementById('copy-key');
-      if(!gen || !input || !copy) return;
-      const rand = (len)=> Array.from(crypto.getRandomValues(new Uint8Array(len))).map(n=>('0'+n.toString(16)).slice(-2)).join('').slice(0,len).toUpperCase();
-      gen.addEventListener('click', ()=>{
-        input.value = `DSP-${rand(8)}-${rand(8)}-${rand(8)}`;
-      });
-      copy.addEventListener('click', async ()=>{
-        if(!input.value) return;
-        try{ await navigator.clipboard.writeText(input.value); copy.textContent = 'Copied'; setTimeout(()=>copy.textContent='Copy', 1200); }catch(e){ alert('Copy failed'); }
-      });
+      const form = document.getElementById('signup-form'); if(!form) return;
+      const btn = document.getElementById('signup-btn'), out = document.getElementById('signup-result');
+      form.addEventListener('submit', ()=>{ btn.disabled=true; out.textContent='Creating…'; setTimeout(()=>{ out.textContent='Welcome aboard (demo)!'; btn.disabled=false; },800); });
     })();
 
-    // -------------------------------
-    // Parallax Starfield (Canvas)
-    // -------------------------------
+    // API key demo
     (function(){
-      const canvas = document.getElementById('starfield');
-      if(!canvas) return;
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const ctx = canvas.getContext('2d');
-      let w=0, h=0, stars=[];
-      const DPR = Math.min(window.devicePixelRatio || 1, 2);
-      const STAR_COUNT = 220;
-      function resize(){
-        const rect = canvas.getBoundingClientRect();
-        w = rect.width; h = rect.height || 500;
-        canvas.width = w * DPR; canvas.height = h * DPR;
-        ctx.setTransform(DPR,0,0,DPR,0,0);
-        if(!stars.length){ init(); }
-      }
-      function init(){
-        stars = Array.from({length: STAR_COUNT}, ()=>({
-          x: Math.random()*w,
-          y: Math.random()*h,
-          z: Math.random()*1 + 0.2,
-          r: Math.random()*1.6 + .2
-        }));
-        draw(0);
-      }
-      function draw(offset){
+      const gen=document.getElementById('gen-key'), input=document.getElementById('api-key'), copy=document.getElementById('copy-key'); if(!gen||!input||!copy) return;
+      const rand=(len)=>Array.from(crypto.getRandomValues(new Uint8Array(len))).map(n=>('0'+n.toString(16)).slice(-2)).join('').slice(0,len).toUpperCase();
+      gen.addEventListener('click',()=>{ input.value=`DSP-${rand(8)}-${rand(8)}-${rand(8)}`; });
+      copy.addEventListener('click',async()=>{ if(!input.value) return; try{ await navigator.clipboard.writeText(input.value); copy.textContent='Copied'; setTimeout(()=>copy.textContent='Copy',1200);}catch(e){} });
+    })();
+
+    // Starfield (light/dark aware)
+    (function(){
+      const canvas = document.getElementById('starfield'); if(!canvas) return;
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const ctx = canvas.getContext('2d'); let w=0,h=0,stars=[]; const DPR = Math.min(devicePixelRatio||1,2), COUNT=200;
+      function resize(){ const rect = canvas.getBoundingClientRect(); w=rect.width; h=rect.height||520; canvas.width=w*DPR; canvas.height=h*DPR; ctx.setTransform(DPR,0,0,DPR,0,0); init(); }
+      function isDark(){ return document.documentElement.getAttribute('data-theme')==='dark'; }
+      function init(){ stars = Array.from({length:COUNT},()=>({ x:Math.random()*w, y:Math.random()*h, z:Math.random()*1+.3, r:Math.random()*1.4+.25, hue: Math.random()<.5 ? 215+Math.random()*20 : (Math.random()<.75 ? 160+Math.random()*20 : 300+Math.random()*15) })); draw(0); }
+      function draw(t){
         ctx.clearRect(0,0,w,h);
+        const alphaBase = isDark()? .35 : .18;
         for(const s of stars){
-          const par = reduce ? 0 : offset * (0.06 * s.z);
-          const x = (s.x + par) % w;
-          ctx.beginPath();
-          ctx.arc(x, s.y, s.r, 0, Math.PI*2);
-          ctx.fillStyle = `rgba(255,255,255,${0.5 + s.z*0.5})`;
-          ctx.fill();
+          const x = reduce ? s.x : (s.x + t*(0.05*s.z)) % w;
+          const a = alphaBase + s.z*(isDark()? .45 : .25);
+          ctx.beginPath(); ctx.arc(x, s.y, s.r, 0, Math.PI*2);
+          ctx.fillStyle = `hsla(${s.hue}, 90%, ${isDark()? '85%' : '40%'}, ${a})`; ctx.fill();
         }
       }
-      let raf, t=0;
-      function loop(){
-        t += 1;
-        draw(t);
-        raf = requestAnimationFrame(loop);
-      }
-      const ro = new ResizeObserver(resize);
-      ro.observe(canvas);
-      resize();
-      if(!reduce){ loop(); }
-      document.addEventListener('visibilitychange', ()=>{ if(document.hidden){ cancelAnimationFrame(raf); } else if(!reduce){ loop(); } });
+      let raf, t=0; function loop(){ t+=1; draw(t); raf=requestAnimationFrame(loop); }
+      new ResizeObserver(resize).observe(canvas); resize(); if(!reduce) loop();
+      document.addEventListener('visibilitychange',()=>{ if(document.hidden){ cancelAnimationFrame(raf); } else if(!reduce){ loop(); } });
+      // re-render when theme toggles
+      new MutationObserver(()=>draw(t)).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
     })();
   </script>
 </body>
