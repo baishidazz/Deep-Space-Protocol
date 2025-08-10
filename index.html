@@ -2,13 +2,13 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
   <title>Deep Space Protocol — Command-grade Liquidity, Zero-lag Execution</title>
-  <meta name="description" content="Deep Space Protocol (DSP) is a premium crypto exchange launched in July 2025. Institutional trust, open access. Spot, Perpetuals, Earn, and developer-first APIs." />
-  <meta name="theme-color" content="#F7FAFF" />
+  <meta name="description" content="Deep Space Protocol (DSP) is a premium crypto exchange launched in July 2025. Institutional trust, open access. Spot, Perpetuals, Earn, and developer-first APIs.">
+  <meta name="theme-color" content="#F7FAFF">
   <style>
     /* ===============================
-       Tokens — light first (bright UI)
+       Design tokens — light first
     =============================== */
     :root{
       --page-bg:
@@ -16,36 +16,22 @@
         radial-gradient(1000px 520px at 110% -20%, #B8F7E85A, transparent 70%),
         radial-gradient(1200px 520px at -15% 120%, #FFD0F05A, transparent 70%),
         linear-gradient(180deg,#F7FAFF 0%, #EFF5FF 45%, #EAF2FF 100%);
-      --text:#0D1326;
-      --muted:#4B5877;
-      --surface:#FFFFFFEE;
-      --outline:#D6E2FF;
-      --radius:18px;
-      --blur:16px;
-      --shadow:0 24px 68px rgba(23,38,80,.12);
-      --container:1280px;
-      --focus:2px solid #2E6BFF;
+      --text:#0D1326; --muted:#4B5877;
+      --surface:#FFFFFFEE; --outline:#D6E2FF;
+      --radius:18px; --blur:16px; --shadow:0 24px 68px rgba(23,38,80,.12);
+      --container:1200px; --focus:2px solid #2E6BFF;
 
-      /* multi-hue accent palette for text highlights */
-      --accent:#2E6BFF; /* blue */
-      --violet:#7C4DFF;
-      --teal:#12D6A0;
-      --pink:#FF57B3;
-      --gold:#FFB02E;
+      --accent:#2E6BFF; --violet:#7C4DFF; --teal:#12D6A0; --pink:#FF57B3; --gold:#FFB02E;
 
-      /* status strip */
-      --success-ink:#063218;
-      --success-dot:#22C55E;
+      --success-ink:#063218; --success-dot:#22C55E;
       --success-grad: linear-gradient(180deg,#E8FFF3,#F7FFF9);
 
-      /* cards/table/code */
-      --card-1:#FFFFFFF2;
-      --card-2:#F2F6FF;
-      --code-bg:#0B1226;
-      --code-ink:#DCE6FF;
+      --card-1:#FFFFFFF2; --card-2:#F2F6FF; --code-bg:#0B1226; --code-ink:#DCE6FF;
 
-      --status-h:38px;
-      --nav-h:56px;
+      /* heights */
+      --status-h:38px; --nav-h:56px; --dock-h:62px;
+      /* breakpoints */
+      --bp-desktop: 1024px;
     }
     html[data-theme="dark"]{
       --page-bg:
@@ -53,17 +39,10 @@
         radial-gradient(1000px 520px at 110% -20%, #2EE9A133, transparent 70%),
         radial-gradient(1200px 520px at -15% 120%, #FF5EBC2E, transparent 70%),
         linear-gradient(180deg,#0B1020 0%, #090F1D 45%, #0A0E1A 100%);
-      --text:#F2F7FF;
-      --muted:#A9B1C7;
-      --surface:#0F1428CC;
-      --outline:#1A2747;
-      --shadow:0 26px 72px rgba(0,0,0,.55);
-      --success-ink:#9FF0C3;
-      --success-grad: linear-gradient(180deg,#0E2A1A,#0A1E14);
-      --card-1:#0D142AFF;
-      --card-2:#0B1226FF;
-      --code-bg:#0B0F1C;
-      --code-ink:#E9EDFF;
+      --text:#F2F7FF; --muted:#A9B1C7;
+      --surface:#0F1428CC; --outline:#1A2747; --shadow:0 26px 72px rgba(0,0,0,.55);
+      --success-ink:#9FF0C3; --success-grad: linear-gradient(180deg,#0E2A1A,#0A1E14);
+      --card-1:#0D142AFF; --card-2:#0B1226FF; --code-bg:#0B0F1C; --code-ink:#E9EDFF;
     }
     @media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
 
@@ -75,26 +54,23 @@
     body{
       margin:0; color:var(--text);
       font: 400 16px/1.6 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: var(--page-bg) !important;
+      background: var(--page-bg);
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
-    body.lock{ overflow:hidden } /* prevent scroll when mobile menu open */
-
     a{ color:inherit; text-decoration:none }
     img{ max-width:100%; height:auto }
     .container{ width:100%; max-width:var(--container); margin-inline:auto; padding-inline:24px }
-    @media (max-width:768px){ .container{ padding-inline:16px } }
+    @media (max-width:720px){ .container{ padding-inline:16px } }
 
-    /* tiny helpers */
-    .only-sm{ display:none }
-    .hide-sm{ display:inline }
-    @media (max-width:680px){
-      .only-sm{ display:inline }
-      .hide-sm{ display:none }
+    .desktop-only{ display:none }
+    .mobile-only{ display:initial }
+    @media (min-width: calc(var(--bp-desktop) + 0px)){
+      .desktop-only{ display:initial }
+      .mobile-only{ display:none }
     }
 
     /* ===============================
-       Status bar (screenshot-like)
+       Status bar (+accent rail)
     =============================== */
     .statusbar{
       position:sticky; top:0; inset-inline:0;
@@ -105,25 +81,12 @@
       border-bottom:1px solid color-mix(in srgb, black 7%, transparent);
       z-index:1002; font-size:14px;
     }
-    .statusbar .dot{
-      width:10px; height:10px; border-radius:50%;
-      background: radial-gradient(circle at 30% 30%, #B6FBD7 0%, var(--success-dot) 60%);
-      box-shadow:0 0 0 2px rgba(34,197,94,.18), 0 0 14px rgba(34,197,94,.45);
-      display:inline-block; margin-right:6px;
-    }
+    .statusbar .dot{ width:10px; height:10px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #B6FBD7 0%, var(--success-dot) 60%); box-shadow:0 0 0 2px rgba(34,197,94,.18), 0 0 14px rgba(34,197,94,.45); margin-right:6px }
     .statusbar .sep{ opacity:.55; margin:0 6px }
-    .statusbar a{ color:inherit; font-weight:600; text-decoration: underline dotted 1px }
-    html[data-theme="dark"] .statusbar{ border-bottom:1px solid rgba(255,255,255,.06) }
-
-    /* thin multi-color rail */
-    .accent-rail{
-      position:sticky; top:calc(var(--status-h) + env(safe-area-inset-top)); height:3px; z-index:1001;
-      background: linear-gradient(90deg,var(--accent),var(--violet),var(--teal),var(--pink),var(--gold));
-      filter: saturate(1.2);
-    }
+    .accent-rail{ position:sticky; top:calc(var(--status-h) + env(safe-area-inset-top)); height:3px; background: linear-gradient(90deg,var(--accent),var(--violet),var(--teal),var(--pink),var(--gold)); z-index:1001 }
 
     /* ===============================
-       Navigation (desktop + mobile)
+       Top Nav (desktop full / mobile compact)
     =============================== */
     .nav{
       position:sticky; top:calc(var(--status-h) + 3px + env(safe-area-inset-top)); inset-inline:0; z-index:1000;
@@ -131,171 +94,149 @@
       backdrop-filter: blur(10px);
       border-bottom:1px solid var(--outline);
     }
-    html[data-theme="dark"] .nav{ background: color-mix(in oklab, #0b1226 65%, transparent); }
+    html[data-theme="dark"] .nav{ background: color-mix(in oklab, #0b1226 65%, transparent) }
     .nav-wrap{ display:flex; align-items:center; justify-content:space-between; padding:12px 0 }
     .brand{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px }
-    .brand-dot{
-      width:24px; height:24px; border-radius:999px; display:grid; place-items:center;
-      background: radial-gradient(100% 100% at 50% 0%, #9ED1FF, var(--accent) 60%, #1F51FF);
-      box-shadow:inset 0 0 10px #fff6, 0 6px 16px rgba(46,107,255,.25);
-    }
+    .brand-dot{ width:24px; height:24px; border-radius:999px; background: radial-gradient(100% 100% at 50% 0%, #9ED1FF, var(--accent) 60%, #1F51FF); box-shadow:inset 0 0 10px #fff6, 0 6px 16px rgba(46,107,255,.25) }
 
-    .nav-links{ display:flex; gap:16px; align-items:center; flex-wrap:wrap }
-    .nav-links a{ padding:8px 10px; border-radius:8px; color:var(--muted); font-weight:600 }
-    .nav-links a.active, .nav-links a:hover{ color:var(--text); background:#0000000e }
-    html[data-theme="dark"] .nav-links a.active, html[data-theme="dark"] .nav-links a:hover{ background:#ffffff14;color:#F2F7FF }
-    .theme-toggle{ margin-left:8px }
-    .icon{ width:1.1em; height:1.1em; vertical-align:-2px }
+    /* desktop links */
+    .nav-links{ display:none; gap:14px; align-items:center }
+    .nav-links a{ padding:8px 10px; border-radius:10px; color:var(--muted); font-weight:600 }
+    .nav-links a.active, .nav-links a:hover{ color:var(--text); background:#00000012 }
+    html[data-theme="dark"] .nav-links a.active, html[data-theme="dark"] .nav-links a:hover{ background:#ffffff18; color:#F2F7FF }
 
-    /* mobile menu button */
-    .menu-btn{
-      display:none; margin-left:12px; border:1px solid var(--outline); background:transparent; height:40px; padding:0 12px; border-radius:12px; font-weight:800; cursor:pointer;
-    }
-    .menu-btn:focus-visible{ outline:var(--focus); outline-offset:2px }
-    @media (max-width:960px){
-      .menu-btn{ display:inline-flex; align-items:center; gap:8px }
-      .nav-links{ display:none } /* hidden until opened */
-      /* open state -> full-width sheet */
-      .nav-links[data-open="true"]{
-        display:flex; flex-direction:column; align-items:flex-start; gap:8px;
-        position:fixed; left:0; right:0; top:calc(var(--status-h) + var(--nav-h) + 6px + env(safe-area-inset-top));
-        padding:16px; border-top:1px solid var(--outline);
-        background: color-mix(in oklab, var(--card-1) 80%, transparent);
-        backdrop-filter: blur(14px);
-        max-height: 70vh; overflow:auto; -webkit-overflow-scrolling:touch;
-        animation: slideDown .18s ease-out;
-      }
-      @keyframes slideDown{ from{ transform:translateY(-6px); opacity:.0 } to{ transform:none; opacity:1 } }
-      .nav-links a{ display:block; width:100% }
+    .theme-toggle{ border:1px solid var(--outline); background:transparent; height:40px; padding:0 12px; border-radius:12px; font-weight:700; cursor:pointer }
+    .theme-toggle:focus-visible{ outline:var(--focus); outline-offset:2px }
+
+    @media (min-width: calc(var(--bp-desktop) + 0px)){
+      .nav-links{ display:flex }
     }
 
     /* ===============================
-       Attention typography helpers
+       Bottom Dock (mobile app-like)
     =============================== */
-    .ink-accent{ color:var(--accent) }
-    .ink-violet{ color:var(--violet) }
-    .ink-teal{ color:var(--teal) }
-    .ink-pink{ color:var(--pink) }
-    .ink-gold{ color:var(--gold) }
-    .g-text{
-      background: linear-gradient(90deg,var(--accent),var(--violet) 40%,var(--teal));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
+    .dock{
+      position:fixed; left:0; right:0; bottom:0; height:calc(var(--dock-h) + env(safe-area-inset-bottom));
+      padding-bottom:env(safe-area-inset-bottom);
+      background: color-mix(in oklab, #fff 85%, transparent);
+      backdrop-filter: blur(10px); border-top:1px solid var(--outline);
+      z-index:1003; display:flex; justify-content:space-around; align-items:center;
     }
-    .hl{
-      --c1: color-mix(in oklab, var(--accent) 22%, white);
-      --c2: color-mix(in oklab, var(--accent) 0%, white);
-      background: linear-gradient(180deg,var(--c1),var(--c2));
-      border:1px solid var(--outline); padding:.2rem .5rem; border-radius:10px; font-weight:800;
+    html[data-theme="dark"] .dock{ background: color-mix(in oklab, #0b1226 85%, transparent) }
+    .dock a{ display:flex; flex-direction:column; align-items:center; gap:4px; font-size:11px; color:var(--muted); padding:8px 10px; border-radius:10px }
+    .dock a.active{ color:var(--text); background:#00000012 }
+    html[data-theme="dark"] .dock a.active{ background:#ffffff18; color:#F2F7FF }
+
+    /* Floating Trade button */
+    .fab{
+      position:fixed; right:18px; bottom:calc(var(--dock-h) + 18px + env(safe-area-inset-bottom));
+      height:54px; padding:0 18px; border-radius:999px; background:var(--accent); color:#fff; border:0; box-shadow:0 14px 36px rgba(46,107,255,.35); font-weight:800; z-index:1004
     }
+
+    /* ===============================
+       Attention text helpers
+    =============================== */
+    .ink-accent{ color:var(--accent) } .ink-violet{ color:var(--violet) } .ink-teal{ color:var(--teal) } .ink-pink{ color:var(--pink) } .ink-gold{ color:var(--gold) }
+    .g-text{ background: linear-gradient(90deg,var(--accent),var(--violet) 40%,var(--teal)); -webkit-background-clip:text; background-clip:text; color:transparent }
+    .hl{ --c1: color-mix(in oklab, var(--accent) 22%, white); --c2: color-mix(in oklab, var(--accent) 0%, white); background: linear-gradient(180deg,var(--c1),var(--c2)); border:1px solid var(--outline); padding:.2rem .5rem; border-radius:10px; font-weight:800 }
 
     /* ===============================
        Hero
     =============================== */
     .hero{ position:relative; overflow:hidden; padding:96px 0 72px; isolation:isolate }
     #starfield{ position:absolute; inset:0; z-index:-1 }
-    .hero-inner{ display:grid; gap:24px; grid-template-columns: 1.2fr .8fr; align-items:center }
-    @media (max-width:1020px){ .hero-inner{ grid-template-columns:1fr } }
-    .headline{ font-size: clamp(28px, 6.2vw, 56px); line-height:1.05; font-weight:900; letter-spacing:-.02em; margin:0 }
-    .subhead{ font-size: clamp(15px, 1.8vw, 19px); color:var(--muted); margin:10px 0 18px }
+    .hero-inner{
+      display:grid; gap:24px;
+      grid-template-columns:1fr; align-items:center;
+    }
+    @media (min-width: calc(var(--bp-desktop) + 0px)){
+      .hero-inner{ grid-template-columns:1.2fr .8fr }
+    }
+    .headline{ font-size: clamp(28px, 6.2vw, 56px); line-height:1.06; font-weight:900; letter-spacing:-.02em; margin:0 }
+    .subhead{ font-size: clamp(15px, 2.2vw, 19px); color:var(--muted); margin:10px 0 18px }
     .cta-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:8px }
-    .cred-bar{ display:flex; gap:10px; flex-wrap:wrap; margin-top:18px }
-    @media (max-width:560px){ .hero{ padding:72px 0 48px } }
+    .chip{ display:inline-flex; align-items:center; gap:.4rem; padding:.35rem .7rem; border-radius:999px; border:1px solid var(--outline); font-size:.85rem; color:var(--muted); background:linear-gradient(180deg, var(--card-2), var(--card-1)) }
 
-    /* UI atoms */
-    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
-      height:44px; padding:0 18px; border-radius:999px; border:1px solid transparent;
-      font-weight:700; letter-spacing:.2px; cursor:pointer; user-select:none;
-      transition: transform .2s, box-shadow .2s, background .2s }
-    .btn:focus-visible{ outline:var(--focus); outline-offset:2px }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.6rem; height:44px; padding:0 18px; border-radius:999px; border:1px solid transparent; font-weight:700; cursor:pointer; transition: transform .2s, box-shadow .2s, background .2s }
     .btn.primary{ background:var(--accent); color:#fff; box-shadow:0 8px 24px rgba(46,107,255,.35) }
     .btn.primary:hover{ transform:translateY(-1px) }
     .btn.ghost{ background:transparent; border-color:var(--outline); color:var(--text) }
-    .btn.ghost:hover{ background:#0000000e }
-    html[data-theme="dark"] .btn.ghost:hover{ background:#ffffff14 }
-    .chip{ display:inline-flex; align-items:center; gap:.4rem; padding:.35rem .7rem; border-radius:999px; border:1px solid var(--outline); font-size:.85rem; color:var(--muted); background:linear-gradient(180deg, var(--card-2), var(--card-1)) }
-    .glass{ background:var(--surface); backdrop-filter: blur(var(--blur)); box-shadow:var(--shadow); border:1px solid var(--outline); border-radius:var(--radius) }
+    .btn.ghost:hover{ background:#00000010 } html[data-theme="dark"] .btn.ghost:hover{ background:#ffffff14 }
+    .glass{ background:var(--surface); backdrop-filter: blur(var(--blur)); box-shadow:var(--shadow); border:1px solid var(--outline); border-radius:var(--radius); padding:24px }
 
     /* Sections / Cards */
     section{ padding:64px 0 }
-    .section-h{ font-size: clamp(20px, 4.2vw, 32px); margin:0 0 10px; font-weight:800 }
+    .section-h{ font-size: clamp(20px, 4vw, 32px); margin:0 0 10px; font-weight:800 }
     .section-p{ color:var(--muted); margin:0 0 22px }
-    .lift{ transition: transform .18s ease, box-shadow .18s ease }
-    .lift:hover{ transform: translateY(-2px) }
-    .card{ position:relative; padding:22px; background:linear-gradient(180deg, var(--card-1), var(--card-2)) }
+    .card{ position:relative; background:linear-gradient(180deg, var(--card-1), var(--card-2)); padding:22px; border-radius:var(--radius) }
     .card::after{ content:""; position:absolute; inset:0; border-radius:var(--radius); pointer-events:none; box-shadow:inset 0 0 0 1px var(--outline) }
+    .lift{ transition: transform .18s ease, box-shadow .18s ease } .lift:hover{ transform: translateY(-2px) }
 
-    /* Inputs */
-    input[type="text"], input[type="email"], input[type="password"]{
-      width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--outline); background:#fff; color:#111
-    }
-    html[data-theme="dark"] input[type="text"], html[data-theme="dark"] input[type="email"], html[data-theme="dark"] input[type="password"]{
-      background:#0f1428; color:#fff
-    }
-    label{ font-weight:700 }
-
-    /* Tables */
-    .table-wrap{ overflow:auto; border-radius:14px; border:1px solid var(--outline); -webkit-overflow-scrolling:touch; }
-    .table-wrap::after{ content:""; position:sticky; right:0; top:0; bottom:0; width:18px; display:block; float:right; background:linear-gradient(90deg, transparent, color-mix(in srgb, var(--card-1) 80%, transparent)); pointer-events:none }
+    /* Tables (desktop grid / mobile stacked cards) */
+    .table-wrap{ overflow:auto; border-radius:14px; border:1px solid var(--outline); -webkit-overflow-scrolling:touch }
     table{ width:100%; border-collapse:separate; border-spacing:0; min-width:620px; background:linear-gradient(180deg,var(--card-2),var(--card-1)) }
-    th, td{ padding:14px 16px; text-align:left; border-bottom:1px solid var(--outline); color:inherit }
+    th, td{ padding:14px 16px; text-align:left; border-bottom:1px solid var(--outline) }
     th{ position:sticky; top:0; background:linear-gradient(180deg,var(--card-2),var(--card-1)); font-weight:800; cursor:pointer }
-    tr:hover td{ background:#00000008 }
-    html[data-theme="dark"] tr:hover td{ background:#ffffff0f }
-    .th-icon{ margin-left:6px; opacity:.6; transition:transform .2s ease }
-    th[data-order="asc"] .th-icon{ transform:rotate(180deg) }
-    .note{ font-size:.92rem; color:var(--muted) }
+    tr:hover td{ background:#00000008 } html[data-theme="dark"] tr:hover td{ background:#ffffff0f }
+    .th-icon{ margin-left:6px; opacity:.6; transition:transform .2s ease } th[data-order="asc"] .th-icon{ transform:rotate(180deg) }
 
-    /* Metrics */
-    .metrics{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px }
+    @media (max-width:600px){
+      .table-wrap{ border:0 }
+      .stack-table{ min-width:0 }
+      .stack-table thead{ display:none }
+      .stack-table, .stack-table tbody, .stack-table tr, .stack-table td{ display:block; width:100% }
+      .stack-table tr{ margin:0 0 12px 0; border:1px solid var(--outline); border-radius:12px; background:linear-gradient(180deg,var(--card-2),var(--card-1)) }
+      .stack-table td{ display:flex; justify-content:space-between; align-items:center; padding:10px 14px; border-bottom:1px dashed var(--outline) }
+      .stack-table td:last-child{ border-bottom:0 }
+      .stack-table td::before{ content: attr(data-label); font-weight:700; color:var(--muted); margin-right:16px }
+    }
+
+    /* Metrics grid */
+    .metrics{ display:grid; grid-template-columns:1fr 1fr; gap:14px }
+    @media (min-width: calc(var(--bp-desktop) + 0px)){ .metrics{ grid-template-columns:repeat(4,1fr); gap:16px } }
     .metric{ padding:18px; border-radius:14px; border:1px dashed var(--outline); background:linear-gradient(180deg, var(--card-2), var(--card-1)) }
     .metric .num{ font-variant-numeric: tabular-nums; font-weight:900; font-size:1.6rem }
-    @media (max-width:900px){ .metrics{ grid-template-columns:1fr 1fr } }
-    @media (max-width:560px){ .metrics{ grid-template-columns:1fr } }
 
     /* Footer */
     footer{ border-top:1px solid var(--outline); padding:36px 0 60px; background:linear-gradient(180deg,var(--card-2),var(--card-1)) }
-    .cols{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:24px }
-    .cols a{ color:var(--muted) }
+    .cols{ display:grid; grid-template-columns:1fr; gap:16px }
+    @media (min-width: calc(var(--bp-desktop) + 0px)){ .cols{ grid-template-columns:2fr 1fr 1fr 1fr; gap:24px } }
     .legal{ margin-top:16px; color:var(--muted); font-size:.92rem }
-    @media (max-width:900px){ .cols{ grid-template-columns:1fr 1fr } }
-    @media (max-width:560px){ .cols{ grid-template-columns:1fr } }
 
-    /* Reveal */
+    /* reveal & texture */
     .reveal{ opacity:0; transform: translateY(12px); transition: opacity .6s ease, transform .6s ease }
     .reveal.show{ opacity:1; transform:none }
-    .skip{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden }
-    .skip:focus{ left:16px; top:16px; width:auto; height:auto; padding:8px 12px; z-index:9999; background:#10172a; color:#fff; border-radius:8px; border:1px solid var(--outline) }
+    .grid-tex{ position:fixed; inset:0; z-index:-1; opacity:.07; mix-blend-mode:multiply }
   </style>
 </head>
 <body>
-  <!-- faint grid texture -->
-  <svg aria-hidden="true" style="position:fixed; inset:0; z-index:-1; opacity:.07; mix-blend-mode:multiply" viewBox="0 0 100 100" preserveAspectRatio="none">
+  <!-- texture -->
+  <svg class="grid-tex" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none">
     <defs><pattern id="grid24" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M 6 0 L 0 0 0 6" fill="none" stroke="#7890D8" stroke-width=".2"/></pattern></defs>
     <rect width="100%" height="100%" fill="url(#grid24)"/>
   </svg>
 
-  <!-- STATUS BAR -->
+  <!-- STATUS -->
   <div class="statusbar" role="status" aria-live="polite">
     <span class="dot" aria-hidden="true"></span>
-    <strong class="hide-sm">All systems operational</strong>
-    <strong class="only-sm">Operational</strong>
+    <strong class="desktop-only">All systems operational</strong>
+    <strong class="mobile-only">Operational</strong>
     <span class="sep">—</span>
-    <span class="hide-sm">90d uptime <b class="ink-teal">99.99%</b> <em>(demo)</em></span>
-    <span class="only-sm"><b class="ink-teal">99.99%</b> · 90d <em>(demo)</em></span>
+    <span class="desktop-only">90d uptime <b class="ink-teal">99.99%</b> <em>(demo)</em></span>
+    <span class="mobile-only"><b class="ink-teal">99.99%</b> · 90d <em>(demo)</em></span>
     <span class="sep">·</span>
     <a href="#status">View status</a>
   </div>
   <div class="accent-rail" aria-hidden="true"></div>
 
-  <!-- NAV -->
+  <!-- NAV (desktop shows full links; mobile仅保留品牌+主题按钮，Tab在底部) -->
   <nav class="nav" aria-label="Primary">
     <div class="container nav-wrap">
       <div class="brand">
         <span class="brand-dot" aria-hidden="true"></span>
-        <span aria-label="Deep Space Protocol">Deep Space Protocol</span>
+        <span>Deep Space Protocol</span>
       </div>
-      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobileMenu">Menu</button>
-      <div id="mobileMenu" class="nav-links" data-open="false">
+      <div class="nav-links desktop-only">
         <a href="#products">Products</a>
         <a href="#fees">Fees</a>
         <a href="#security">Security</a>
@@ -304,67 +245,44 @@
         <a href="#careers">Careers</a>
         <a href="#blog">Blog</a>
         <a href="#support">Support</a>
-        <button class="btn ghost theme-toggle" type="button" aria-pressed="false" aria-label="Toggle theme">
-          <svg class="icon"><use id="theme-use" href="#icon-moon"></use></svg><span>Dark mode</span>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Toggle theme">
+          <svg style="width:1.1em;height:1.1em;vertical-align:-2px"><use id="theme-use" href="#icon-moon"></use></svg> <span>Dark mode</span>
         </button>
       </div>
+      <!-- mobile theme toggle -->
+      <button class="theme-toggle mobile-only" type="button" aria-pressed="false" aria-label="Toggle theme">
+        <svg style="width:1.1em;height:1.1em;vertical-align:-2px"><use id="theme-use-m" href="#icon-moon"></use></svg>
+      </button>
     </div>
   </nav>
-
-  <!-- ICONS -->
-  <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
-    <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M20 12.5A8 8 0 1111.5 4a6.5 6.5 0 008.5 8.5z" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
-    <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M17.3 6.7l2.1-2.1M4.6 19.4l2.1-2.1"/></g></symbol>
-    <symbol id="icon-spot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 13l3-3 3 3 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-    <symbol id="icon-perp" viewBox="0 0 24 24"><path d="M4 16l6-8 4 5 6-8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 19h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
-    <symbol id="icon-earn" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v10M9 10h6M9 14h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
-    <symbol id="icon-apple" viewBox="0 0 24 24"><path d="M16.4 12.7c0-3.1 2.5-4.2 2.6-4.2-1.4-2-3.5-2.3-4.2-2.3-1.8-.2-3.5 1-4.4 1-1 0-2.5-1-4.1-.9-2.1.1-4.1 1.2-5.2 3-2.2 3.7-.6 9.2 1.5 12.2 1 1.4 2.1 2.9 3.6 2.9 1.4 0 1.9-.9 3.6-.9s2.1.9 3.6.9 2.3-1.4 3.2-2.8c1.1-1.6 1.5-3.2 1.5-3.3-.1 0-2.9-1.1-2.9-4.6z" fill="currentColor"/><path d="M14.8 4.6c.8-1 1.3-2.3 1.2-3.6-1.2.1-2.6.8-3.4 1.8-.7.9-1.3 2.2-1.1 3.5 1.3.1 2.6-.7 3.3-1.7z" fill="currentColor"/></symbol>
-    <symbol id="icon-play" viewBox="0 0 24 24"><path d="M3 2l18 10L3 22z" fill="currentColor"/></symbol>
-    <symbol id="icon-sort" viewBox="0 0 24 24"><path d="M8 10l4-4 4 4M8 14l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-  </svg>
-
-  <a class="skip" href="#main">Skip to content</a>
 
   <!-- HERO -->
   <header class="hero" role="banner">
     <canvas id="starfield" aria-hidden="true"></canvas>
     <div class="container hero-inner">
-      <div class="glass" style="padding:26px;">
-        <h1 class="headline">
-          <span class="g-text">Command-grade liquidity.</span>
-          <span class="ink-teal">Zero-lag execution.</span>
-        </h1>
-        <p class="subhead">
-          Deep Space Protocol (DSP) — a premium crypto exchange launched in
-          <span class="hl ink-accent">July 2025</span>. Institutional trust, open access, and developer-first APIs.
-        </p>
-        <div class="cta-row">
+      <div class="glass">
+        <h1 class="headline"><span class="g-text">Command-grade liquidity.</span> <span class="ink-teal">Zero-lag execution.</span></h1>
+        <p class="subhead">Deep Space Protocol (DSP) — premium crypto exchange launched in <span class="hl ink-accent">July 2025</span>. Institutional trust, open access, developer-first APIs.</p>
+        <div class="cta-row desktop-only">
           <a href="#signup" class="btn primary">Get Started</a>
           <a href="#fees" class="btn ghost">View Fees</a>
           <a href="#api" class="btn ghost">API Docs</a>
         </div>
-        <div class="cred-bar" aria-label="Highlights">
-          <span class="chip"><b class="ink-gold">SOC2</b>-aligned controls <em>(demo)</em></span>
-          <span class="chip"><b class="ink-teal">99.95%</b> engine uptime <em>(demo)</em></span>
-          <span class="chip"><b class="ink-violet">Weekly</b> Proof-of-Reserves <em>(demo)</em></span>
+        <div class="cred-bar desktop-only">
+          <span class="chip"><b class="ink-gold">SOC2</b>-aligned <em>(demo)</em></span>
+          <span class="chip"><b class="ink-teal">99.95%</b> uptime <em>(demo)</em></span>
+          <span class="chip"><b class="ink-violet">Weekly</b> PoR <em>(demo)</em></span>
         </div>
       </div>
-      <div class="glass lift" style="padding:22px;">
+      <div class="glass lift">
         <h2 class="section-h"><span class="ink-accent">Market</span> snapshot <em>(demo)</em></h2>
-        <div class="table-wrap" role="region" aria-label="Markets table">
-          <table aria-describedby="mkt-note">
-            <thead>
-              <tr>
-                <th scope="col">Pair</th>
-                <th scope="col" data-sort="num">Price</th>
-                <th scope="col" data-sort="num">24h Change</th>
-                <th scope="col" data-sort="num">24h Volume</th>
-              </tr>
-            </thead>
+        <div class="table-wrap" role="region" aria-label="Markets">
+          <table class="stack-table" aria-describedby="mkt-note">
+            <thead><tr><th>Pair</th><th data-sort="num">Price</th><th data-sort="num">24h Change</th><th data-sort="num">24h Volume</th></tr></thead>
             <tbody id="market-body"></tbody>
           </table>
         </div>
-        <p id="mkt-note" class="note">Demonstration data for visual purposes only.</p>
+        <p id="mkt-note" class="section-p" style="margin-top:10px">Demonstration data for visual purposes only.</p>
       </div>
     </div>
   </header>
@@ -374,46 +292,32 @@
     <section id="signup" class="container reveal">
       <h2 class="section-h"><span class="ink-violet">Create</span> your DSP account</h2>
       <p class="section-p">Demo sign-up. No data is sent anywhere.</p>
-      <form class="card" id="signup-form" onsubmit="return false;" aria-describedby="signup-note">
-        <div class="grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
+      <form class="card glass" onsubmit="return false;" aria-describedby="signup-note">
+        <div style="display:grid;grid-template-columns:1fr;gap:12px">
           <label>Email <input type="email" required placeholder="you@example.com" autocomplete="email"></label>
           <label>Password <input type="password" required minlength="8" placeholder="********" autocomplete="new-password"></label>
         </div>
         <label style="display:flex; gap:10px; align-items:flex-start; margin-top:12px">
           <input type="checkbox" required> <span>I agree to the <a href="#terms">Terms</a> and <a href="#privacy">Privacy</a>.</span>
         </label>
-        <div class="cta-row">
+        <div class="cta-row desktop-only">
           <button class="btn primary" type="submit" id="signup-btn">Create demo account</button>
           <span class="chip" id="signup-result" aria-live="polite"></span>
         </div>
       </form>
-      <p id="signup-note" class="note">This is a local demo only.</p>
+      <p id="signup-note" class="section-p">This is a local demo only.</p>
     </section>
 
     <!-- PRODUCTS -->
     <section id="products" class="container reveal">
       <h2 class="section-h">Products</h2>
       <p class="section-p">Spot for simplicity, <span class="ink-violet">Perpetuals</span> for precision, and <span class="ink-teal">Earn</span> for long-term compounding.</p>
-      <div class="grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
-        <article class="card lift" aria-labelledby="prod-spot">
-          <h3 id="prod-spot"><svg class="icon"><use href="#icon-spot"></use></svg> <span class="ink-accent">Spot</span></h3>
-          <p>Reliable order books, deep routing, and transparent fees. Market, limit, and TWAP <em>(demo)</em>.</p>
-          <ul><li>ISO-timestamped fills</li><li>Median execution &lt; <b class="ink-teal">10ms</b> <em>(demo)</em></li><li>Self-trade prevention</li></ul>
-          <div style="margin-top:10px"><a class="btn ghost" href="#signup">Open account</a></div>
-        </article>
-        <article class="card lift" aria-labelledby="prod-perp">
-          <h3 id="prod-perp"><svg class="icon"><use href="#icon-perp"></use></svg> <span class="ink-violet">Perpetuals</span></h3>
-          <p>Low-latency matching with robust risk engine and auto-deleveraging guardrails <em>(demo)</em>.</p>
-          <ul><li>Cross/isolated margin</li><li>Dynamic funding <em>(demo)</em></li><li>Advanced triggers</li></ul>
-          <div style="margin-top:10px"><a class="btn ghost" href="#signup">Open account</a></div>
-        </article>
-        <article class="card lift" aria-labelledby="prod-earn">
-          <h3 id="prod-earn"><svg class="icon"><use href="#icon-earn"></use></svg> <span class="ink-teal">Earn</span></h3>
-          <p>Staking and launchpool with clear risk labels and disclosures <em>(demo)</em>.</p>
-          <ul><li>Auto-compound options</li><li>Flexible redemptions</li><li>Transparent yields</li></ul>
-          <div style="margin-top:10px"><a class="btn ghost" href="#signup">Open account</a></div>
-        </article>
+      <div class="grid-prod" style="display:grid;gap:16px;grid-template-columns:1fr">
+        <article class="card lift"><h3><svg width="18" height="18"><use href="#icon-spot"></use></svg> <span class="ink-accent">Spot</span></h3><p>Reliable books, deep routing, transparent fees. Market, limit, TWAP <em>(demo)</em>.</p></article>
+        <article class="card lift"><h3><svg width="18" height="18"><use href="#icon-perp"></use></svg> <span class="ink-violet">Perpetuals</span></h3><p>Low-latency matching with robust risk engine and ADL guardrails <em>(demo)</em>.</p></article>
+        <article class="card lift"><h3><svg width="18" height="18"><use href="#icon-earn"></use></svg> <span class="ink-teal">Earn</span></h3><p>Staking and launchpool with clear risk labels and disclosures <em>(demo)</em>.</p></article>
       </div>
+      <style>@media (min-width: 720px){ .grid-prod{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px } }</style>
     </section>
 
     <!-- METRICS -->
@@ -430,43 +334,35 @@
     <section id="fees" class="container reveal">
       <h2 class="section-h">Fees</h2>
       <p class="section-p">Transparent maker/taker tiers. Volume windows reset daily <em>(demo)</em>.</p>
-      <div class="table-wrap" role="region" aria-label="Fees table">
-        <table id="fees-table">
+      <div class="table-wrap" role="region" aria-label="Fees">
+        <table id="fees-table" class="stack-table">
           <thead><tr><th>Tier</th><th data-sort="num">30d Volume (USD)</th><th data-sort="num">Maker</th><th data-sort="num">Taker</th></tr></thead>
           <tbody>
-            <tr><td>Base</td><td>0</td><td>0.10%</td><td class="ink-pink">0.12%</td></tr>
-            <tr><td>VIP 1</td><td>&ge; 1,000,000</td><td>0.08%</td><td>0.10%</td></tr>
-            <tr><td>VIP 2</td><td>&ge; 10,000,000</td><td>0.06%</td><td>0.08%</td></tr>
-            <tr><td>VIP 3</td><td>&ge; 50,000,000</td><td class="ink-teal">0.03%</td><td>0.06%</td></tr>
-            <tr><td>VIP 4</td><td>&ge; 100,000,000</td><td>0.01%</td><td class="ink-accent">0.04%</td></tr>
-            <tr><td>VIP 5</td><td>&ge; 500,000,000</td><td class="ink-gold">0.00%</td><td class="ink-teal">0.03%</td></tr>
+            <tr><td data-label="Tier">Base</td><td data-label="30d Volume (USD)">0</td><td data-label="Maker">0.10%</td><td data-label="Taker" class="ink-pink">0.12%</td></tr>
+            <tr><td data-label="Tier">VIP 1</td><td data-label="30d Volume (USD)">&ge; 1,000,000</td><td data-label="Maker">0.08%</td><td data-label="Taker">0.10%</td></tr>
+            <tr><td data-label="Tier">VIP 2</td><td data-label="30d Volume (USD)">&ge; 10,000,000</td><td data-label="Maker">0.06%</td><td data-label="Taker">0.08%</td></tr>
+            <tr><td data-label="Tier">VIP 3</td><td data-label="30d Volume (USD)">&ge; 50,000,000</td><td data-label="Maker" class="ink-teal">0.03%</td><td data-label="Taker">0.06%</td></tr>
+            <tr><td data-label="Tier">VIP 4</td><td data-label="30d Volume (USD)">&ge; 100,000,000</td><td data-label="Maker">0.01%</td><td data-label="Taker" class="ink-accent">0.04%</td></tr>
+            <tr><td data-label="Tier">VIP 5</td><td data-label="30d Volume (USD)">&ge; 500,000,000</td><td data-label="Maker" class="ink-gold">0.00%</td><td data-label="Taker" class="ink-teal">0.03%</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="note">All numbers are <strong>demo data</strong>. Final fees may vary by product and jurisdiction.</p>
     </section>
 
     <!-- SECURITY -->
     <section id="security" class="container reveal">
       <h2 class="section-h"><span class="ink-pink">Security</span> & Compliance</h2>
-      <div class="grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px">
-        <div class="card"><h3>Custody</h3><p>Segregated wallets with majority cold storage and strict multi-sig policies. 24/7 key ceremonies and access rotation <em>(demo)</em>.</p><ul><li><b class="ink-teal">92%</b> cold / <b class="ink-pink">8%</b> warm <em>(demo)</em></li><li>Withdrawal risk checks</li><li>Hardware-backed HSM</li></ul></div>
-        <div class="card"><h3>Compliance</h3><p>KYC/AML program aligned to global standards with ongoing sanctions screening. <b class="ink-gold">SOC2</b>-aligned controls with Type II in progress <em>(demo)</em>.</p><ul><li>KYB for institutions</li><li>Transaction monitoring</li><li>Travel Rule adapters <em>(demo)</em></li></ul></div>
+      <div class="grid-sec" style="display:grid;grid-template-columns:1fr;gap:16px">
+        <div class="card"><h3>Custody</h3><p>Segregated wallets with majority cold storage and strict multi-sig policies. 24/7 key ceremonies and access rotation <em>(demo)</em>.</p></div>
+        <div class="card"><h3>Compliance</h3><p>KYC/AML aligned to global standards. <b class="ink-gold">SOC2</b>-aligned controls with Type II in progress <em>(demo)</em>.</p></div>
       </div>
-      <div class="card" style="margin-top:16px">
-        <h3>Proof of Reserves</h3>
-        <p>Merkle-tree attestations anchored on-chain. Third-party verification published on a rolling basis <em>(demo)</em>.</p>
-        <details><summary>How does PoR work?</summary><p>Customer liabilities are anonymized and hashed as leaves in a Merkle tree. Verifiers recompute roots to ensure inclusion without exposing identities.</p></details>
-        <details><summary>What about liabilities?</summary><p>We publish methods to validate both assets and liabilities to avoid partial attestations.</p></details>
-        <details><summary>When are reports updated?</summary><p>Weekly, with historical snapshots retained for comparison <em>(demo)</em>.</p></details>
-      </div>
+      <style>@media (min-width: 720px){ .grid-sec{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px } }</style>
     </section>
 
     <!-- API -->
     <section id="api" class="container reveal">
       <h2 class="section-h"><span class="ink-accent">API</span> for Builders</h2>
-      <p class="section-p">Consistent REST and streaming WebSocket designed for orchestration, not surprises.</p>
-      <div class="grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px">
+      <div class="grid-api" style="display:grid;grid-template-columns:1fr;gap:16px">
         <div class="card">
           <h3>REST <em>(demo)</em></h3>
           <pre style="background:var(--code-bg);color:var(--code-ink)"><code>GET /api/v1/markets
@@ -485,72 +381,42 @@ GET /api/v1/funding</code></pre>
             <input id="api-key" type="text" readonly aria-label="Demo API key" class="glass" style="flex:1; padding:10px 12px; border-radius:12px; border:1px solid var(--outline)">
             <button class="btn ghost" type="button" id="copy-key">Copy</button>
           </div>
-          <p class="note">Rate limits <em>(demo)</em>: 1200 req/min REST, 50 streams WebSocket.</p>
-          <h4 style="margin:14px 0 6px">cURL example</h4>
-          <pre style="background:var(--code-bg);color:var(--code-ink)"><code>curl -H "Authorization: Bearer &lt;YOUR_DEMO_KEY&gt;" \
-  https://api.dsp.example/v1/markets</code></pre>
+          <p class="section-p">Rate limits <em>(demo)</em>: 1200 req/min REST, 50 streams WebSocket.</p>
         </div>
       </div>
+      <style>@media (min-width: 720px){ .grid-api{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px } }</style>
     </section>
 
-    <!-- MOBILE -->
-    <section class="container reveal">
-      <h2 class="section-h"><span class="ink-gold">Mobile</span> Apps</h2>
-      <p class="section-p">Trade wherever you are. Scan to download (placeholder).</p>
-      <div class="grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px">
-        <div class="card" style="display:flex; align-items:center; justify-content:center; min-height:260px">
-          <div style="width:220px; height:440px; border:10px solid #111; border-radius:28px; position:relative; background:#0d1220; box-shadow:0 18px 40px rgba(0,0,0,.35)">
-            <div style="position:absolute; inset:10px; border-radius:18px; background:linear-gradient(180deg,#19213a, #0d1220)"></div>
-            <div style="position:absolute; top:6px; left:50%; transform:translateX(-50%); width:70px; height:6px; background:#333; border-radius:20px"></div>
-          </div>
-        </div>
-        <div class="card">
-          <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center">
-            <a class="btn ghost" aria-label="Download on the App Store" href="#"><svg class="icon" aria-hidden="true"><use href="#icon-apple"></use></svg>App Store</a>
-            <a class="btn ghost" aria-label="Get it on Google Play" href="#"><svg class="icon" aria-hidden="true"><use href="#icon-play"></use></svg>Google Play</a>
-          </div>
-          <div style="margin-top:16px; display:flex; gap:16px; align-items:center">
-            <svg width="84" height="84" role="img" aria-label="QR code placeholder">
-              <rect width="100%" height="100%" fill="#E6EEFF" />
-              <rect x="8" y="8" width="20" height="20" fill="#2E6BFF"/>
-              <rect x="56" y="8" width="20" height="20" fill="#2E6BFF"/>
-              <rect x="8" y="56" width="20" height="20" fill="#2E6BFF"/>
-              <rect x="56" y="56" width="20" height="20" fill="#2E6BFF"/>
-              <rect x="24" y="24" width="36" height="36" fill="#2E6BFF"/>
-            </svg>
-            <p class="note" style="margin:0">Scan to open download page (placeholder).</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ABOUT / BLOG / CAREERS / STATUS / SUPPORT / LEGAL -->
+    <!-- ABOUT / BLOG / CAREERS / STATUS / SUPPORT / LEGAL (responsive) -->
     <section id="about" class="container reveal">
       <h2 class="section-h">About Deep Space Protocol</h2>
-      <p class="section-p">Founded and launched in July 2025, DSP is built by exchange engineers, market makers, and compliance leads who care about reliability over hype.</p>
-      <div class="grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
-        <div class="card"><h3 class="ink-accent">Founding Story</h3><p>We focused on clean APIs, realistic fees, and a clear safety model.</p></div>
+      <p class="section-p">Founded and launched in July 2025 by exchange engineers, market makers, and compliance leads.</p>
+      <div class="grid-about" style="display:grid;grid-template-columns:1fr;gap:16px">
+        <div class="card"><h3 class="ink-accent">Founding Story</h3><p>Built for reliability over hype.</p></div>
         <div class="card"><h3 class="ink-violet">Values</h3><ul><li>Clarity over complexity</li><li>Security by design</li><li>Respect for time and capital</li></ul></div>
-        <div class="card"><h3 class="ink-teal">Coverage</h3><p>Operations across multiple time zones with rolling support coverage <em>(demo)</em>.</p></div>
+        <div class="card"><h3 class="ink-teal">Coverage</h3><p>Multiple time zones with rolling support <em>(demo)</em>.</p></div>
       </div>
+      <style>@media (min-width: 720px){ .grid-about{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px } }</style>
     </section>
 
     <section id="blog" class="container reveal">
       <h2 class="section-h">News & Updates</h2>
-      <div class="grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
-        <article class="card lift"><h3 class="ink-accent">DSP launches with Spot & Perps</h3><p class="note">July 02, 2025 · Updates</p><p>We opened our first markets with a focus on clear fees, robust custody, and API simplicity.</p></article>
-        <article class="card lift"><h3 class="ink-violet">Proof-of-Reserves cadence</h3><p class="note">July 15, 2025 · Security</p><p>We adopted weekly attestations and explain how to verify your account inclusion.</p></article>
-        <article class="card lift"><h3 class="ink-teal">WebSocket reliability notes</h3><p class="note">August 01, 2025 · API</p><p>A peek at our backpressure model and guidelines for resilient streaming clients.</p></article>
+      <div class="grid-blog" style="display:grid;grid-template-columns:1fr;gap:16px">
+        <article class="card lift"><h3 class="ink-accent">DSP launches with Spot & Perps</h3><p class="section-p">July 02, 2025 · Updates</p></article>
+        <article class="card lift"><h3 class="ink-violet">Proof-of-Reserves cadence</h3><p class="section-p">July 15, 2025 · Security</p></article>
+        <article class="card lift"><h3 class="ink-teal">WebSocket reliability notes</h3><p class="section-p">Aug 01, 2025 · API</p></article>
       </div>
+      <style>@media (min-width: 720px){ .grid-blog{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px } }</style>
     </section>
 
     <section id="careers" class="container reveal">
       <h2 class="section-h">Careers</h2>
-      <div class="grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
-        <div class="card"><h3>Risk Analyst</h3><p class="note">Remote · Full-time</p><p>Develop controls for withdrawals, credit limits, and liquidation pipelines.</p><a class="btn ghost" href="mailto:careers@example.com">Apply</a></div>
-        <div class="card"><h3>Golang Exchange Engineer</h3><p class="note">Hybrid · Full-time</p><p>Build high-integrity services around matching, settlement, and events.</p><a class="btn ghost" href="mailto:careers@example.com">Apply</a></div>
-        <div class="card"><h3>Design Systems Lead</h3><p class="note">Remote · Full-time</p><p>Own a component library with accessibility and performance at the core.</p><a class="btn ghost" href="mailto:careers@example.com">Apply</a></div>
+      <div class="grid-career" style="display:grid;grid-template-columns:1fr;gap:16px">
+        <div class="card"><h3>Risk Analyst</h3><p class="section-p">Remote · Full-time</p></div>
+        <div class="card"><h3>Golang Exchange Engineer</h3><p class="section-p">Hybrid · Full-time</p></div>
+        <div class="card"><h3>Design Systems Lead</h3><p class="section-p">Remote · Full-time</p></div>
       </div>
+      <style>@media (min-width: 720px){ .grid-career{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px } }</style>
     </section>
 
     <section id="status" class="container reveal">
@@ -564,18 +430,14 @@ GET /api/v1/funding</code></pre>
     </section>
 
     <section id="support" class="container reveal">
-      <h2 class="section-h">Support & Status</h2>
-      <div class="grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
-        <div class="card"><h3>Help Center</h3><p>Guides and troubleshooting to help you ship faster.</p><a class="btn ghost" href="#support">Open Help Center</a></div>
-        <div class="card"><h3>Status</h3><p>Transparent uptime, maintenance, and incident timelines <em>(demo)</em>.</p><a class="btn ghost" href="#status">View Status</a></div>
-        <div class="card"><h3>Security</h3><p>Report a vulnerability: <a href="mailto:security@example.com">security@example.com</a></p><a class="btn ghost" href="#security">PGP Key</a></div>
+      <h2 class="section-h">Support & Legal</h2>
+      <div class="grid-supp" style="display:grid;grid-template-columns:1fr;gap:16px">
+        <div class="card"><h3>Help Center</h3><p>Guides and troubleshooting.</p></div>
+        <div class="card"><h3>Security</h3><p>Report: security@example.com</p></div>
+        <div class="card"><h3>Legal</h3><p>Terms · Privacy · Risk disclosure (demo)</p></div>
       </div>
-      <p class="note">SLA <em>(demo)</em>: best-effort response within 24 hours on business days.</p>
+      <style>@media (min-width: 720px){ .grid-supp{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px } }</style>
     </section>
-
-    <section id="terms" class="container reveal"><h2 class="section-h">Terms (Demo)</h2><div class="card"><p class="note">Placeholder terms for demonstration only. Replace with your legal content.</p></div></section>
-    <section id="privacy" class="container reveal"><h2 class="section-h">Privacy (Demo)</h2><div class="card"><p class="note">We do not collect any data on this demo page. Replace with your actual privacy policy.</p></div></section>
-    <section id="risk" class="container reveal"><h2 class="section-h">Risk Disclosure (Demo)</h2><div class="card"><p class="note">Digital asset prices are volatile. Do not trade with funds you cannot afford to lose.</p></div></section>
   </main>
 
   <!-- FOOTER -->
@@ -583,60 +445,81 @@ GET /api/v1/funding</code></pre>
     <div class="container">
       <div class="cols">
         <div>
-          <div class="brand" style="margin-bottom:8px">
-            <span class="brand-dot" aria-hidden="true"></span>
-            Deep Space Protocol
+          <div class="brand" style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <span class="brand-dot" aria-hidden="true"></span> Deep Space Protocol
           </div>
-          <p class="note">A premium crypto exchange launched in July 2025. Trading involves risk. Past performance is not indicative of future results.</p>
+          <p class="section-p">Premium crypto exchange launched in July 2025. Trading involves risk. © 2025 DSP.</p>
         </div>
         <div><h4>Company</h4><a href="#about">About</a><br><a href="#careers">Careers</a><br><a href="#blog">News</a></div>
         <div><h4>Resources</h4><a href="#api">API</a><br><a href="#fees">Fees</a><br><a href="#support">Support</a></div>
-        <div><h4>Legal</h4><a href="#terms">Terms</a><br><a href="#privacy">Privacy</a><br><a href="#risk">Risk Disclosure</a><br><a href="#">Cookie Policy</a></div>
+        <div><h4>Legal</h4><a href="#support">Terms</a><br><a href="#support">Privacy</a><br><a href="#support">Risk</a></div>
       </div>
-      <p class="legal">Availability subject to jurisdiction. Not available in sanctioned regions. Users are responsible for their tax obligations. All metrics marked “demo” are illustrative only. © 2025 Deep Space Protocol. All rights reserved.</p>
     </div>
   </footer>
 
+  <!-- MOBILE DOCK (仅手机端显示) -->
+  <nav class="dock mobile-only" aria-label="Bottom navigation">
+    <a href="#main" data-tab="home" class="active">
+      <svg width="20" height="20" aria-hidden="true"><path d="M10 3l7 6v8a1 1 0 0 1-1 1h-4v-5H8v5H4a1 1 0 0 1-1-1V9l7-6z" fill="currentColor"/></svg>
+      Home
+    </a>
+    <a href="#products" data-tab="markets">
+      <svg width="20" height="20" aria-hidden="true"><path d="M3 12l4-4 3 3 5-6 2 2-7 9-3-3-4 4z" fill="currentColor"/></svg>
+      Markets
+    </a>
+    <a href="#fees" data-tab="trade">
+      <svg width="20" height="20" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      Fees
+    </a>
+    <a href="#api" data-tab="api">
+      <svg width="20" height="20" aria-hidden="true"><path d="M4 6h6v6H4zM14 12h6v6h-6zM10 16l4-4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      API
+    </a>
+    <a href="#support" data-tab="account">
+      <svg width="20" height="20" aria-hidden="true"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-6 8a6 6 0 1112 0H4z" fill="currentColor"/></svg>
+      Account
+    </a>
+  </nav>
+  <button class="fab mobile-only" onclick="document.querySelector('#signup')?.scrollIntoView({behavior:'smooth'})">Trade (Demo)</button>
+
+  <!-- ICON SPRITE -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M20 12.5A8 8 0 1111.5 4a6.5 6.5 0 008.5 8.5z" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M17.3 6.7l2.1-2.1M4.6 19.4l2.1-2.1"/></g></symbol>
+  </svg>
+
   <script>
-    // Mobile menu toggle
+    // Theme toggles (desktop + mobile)
     (function(){
-      const btn = document.querySelector('.menu-btn');
-      const menu = document.getElementById('mobileMenu');
-      if(!btn || !menu) return;
-      const open = (v)=>{ menu.dataset.open = String(v); btn.setAttribute('aria-expanded', String(v)); document.body.classList.toggle('lock', v); };
-      btn.addEventListener('click', ()=> open(menu.dataset.open !== 'true'));
-      // close on link click (for in-page anchors)
-      menu.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>open(false)));
-      // close on Escape
-      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') open(false); });
+      function init(btn, useId){
+        if(!btn) return;
+        const label = btn.querySelector('span');
+        const use = document.getElementById(useId);
+        const root = document.documentElement;
+        const saved = localStorage.getItem('theme');
+        if(saved){ root.setAttribute('data-theme', saved); btn.setAttribute('aria-pressed', saved==='dark'); if(label) label.textContent = saved==='dark' ? 'Light mode' : 'Dark mode'; use?.setAttribute('href', saved==='dark' ? '#icon-sun' : '#icon-moon'); }
+        btn.addEventListener('click', () => {
+          const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          btn.setAttribute('aria-pressed', String(next==='dark'));
+          if(label) label.textContent = next==='dark' ? 'Light mode' : 'Dark mode';
+          use?.setAttribute('href', next==='dark' ? '#icon-sun' : '#icon-moon');
+        });
+      }
+      init(document.querySelector('.nav .desktop-only .theme-toggle'), 'theme-use');
+      init(document.querySelector('.nav .mobile-only.theme-toggle'), 'theme-use-m');
     })();
 
-    // Theme toggle (global)
+    // Bottom dock behavior (mobile)
     (function(){
-      const btn = document.querySelector('.theme-toggle');
-      const label = btn?.querySelector('span');
-      const use = document.getElementById('theme-use');
-      const root = document.documentElement;
-      const saved = localStorage.getItem('theme');
-      if(saved){ root.setAttribute('data-theme', saved); btn?.setAttribute('aria-pressed', saved==='dark'); label && (label.textContent = saved==='dark' ? 'Light mode' : 'Dark mode'); use?.setAttribute('href', saved==='dark' ? '#icon-sun' : '#icon-moon'); }
-      btn?.addEventListener('click', () => {
-        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        root.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        btn.setAttribute('aria-pressed', String(next==='dark'));
-        if(label) label.textContent = next==='dark' ? 'Light mode' : 'Dark mode';
-        use?.setAttribute('href', next==='dark' ? '#icon-sun' : '#icon-moon');
-      });
-    })();
-
-    // Smooth scroll & active link
-    (function(){
-      const links = document.querySelectorAll('.nav-links a[href^="#"]');
-      links.forEach(a=>{
+      const dock = document.querySelector('.dock'); if(!dock) return;
+      dock.querySelectorAll('a').forEach(a=>{
         a.addEventListener('click', (e)=>{
-          const id = a.getAttribute('href'), el = document.querySelector(id);
-          if(!el) return; e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'});
-          links.forEach(l=>l.classList.remove('active')); a.classList.add('active');
+          const id = a.getAttribute('href'); const el = document.querySelector(id);
+          if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+          dock.querySelectorAll('a').forEach(x=>x.classList.remove('active'));
+          a.classList.add('active');
         });
       });
     })();
@@ -647,7 +530,7 @@ GET /api/v1/funding</code></pre>
       document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
     })();
 
-    // Demo market data
+    // Market demo rows (also set data-labels for mobile stacked table)
     (function(){
       const rows = [
         ['BTC-USD','67,420.12','+1.24%','$1,202,388,000'],
@@ -655,11 +538,19 @@ GET /api/v1/funding</code></pre>
         ['SOL-USD','154.77','+2.10%','$312,771,000'],
         ['ATOM-USD','9.12','+0.30%','$41,002,100']
       ];
+      const labels = ['Pair','Price','24h Change','24h Volume'];
       const tbody = document.getElementById('market-body');
-      rows.forEach(r=>{ const tr=document.createElement('tr'); tr.innerHTML = `<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td>`; tbody.appendChild(tr); });
+      rows.forEach(r=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML = `<td data-label="${labels[0]}">${r[0]}</td>
+                        <td data-label="${labels[1]}">${r[1]}</td>
+                        <td data-label="${labels[2]}">${r[2]}</td>
+                        <td data-label="${labels[3]}">${r[3]}</td>`;
+        tbody.appendChild(tr);
+      });
     })();
 
-    // Counters
+    // Counters animation
     (function(){
       const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
       const els = document.querySelectorAll('[data-counter]');
@@ -674,12 +565,12 @@ GET /api/v1/funding</code></pre>
       if(els.length) io.observe(els[0]);
     })();
 
-    // Sortable fees table
+    // Sortable fees table (desktop)
     (function(){
       const table = document.getElementById('fees-table'); if(!table) return;
       const parseNum = (s)=> typeof s!=='string' ? s : (s.includes('%')?parseFloat(s):parseFloat(s.replace(/[^\d.]/g,'')));
       table.querySelectorAll('th[data-sort]').forEach((th,idx)=>{
-        th.innerHTML = th.textContent + ' <svg class="icon th-icon"><use href="#icon-sort"></use></svg>';
+        th.innerHTML = th.textContent + ' <svg style="width:1.1em;height:1.1em;vertical-align:-2px;opacity:.7"><use href="#icon-sort"></use></svg>';
         th.addEventListener('click', ()=>{
           const body = table.tBodies[0], rows = Array.from(body.rows), asc = th.dataset.order !== 'asc';
           rows.sort((a,b)=>{ const A=parseNum(a.cells[idx].textContent), B=parseNum(b.cells[idx].textContent); return asc?A-B:B-A; });
@@ -690,22 +581,15 @@ GET /api/v1/funding</code></pre>
       });
     })();
 
-    // Signup demo
+    // Signup demo feedback
     (function(){
-      const form = document.getElementById('signup-form'); if(!form) return;
+      const form = document.querySelector('#signup form');
+      if(!form) return;
       const btn = document.getElementById('signup-btn'), out = document.getElementById('signup-result');
-      form.addEventListener('submit', ()=>{ btn.disabled=true; out.textContent='Creating…'; setTimeout(()=>{ out.textContent='Welcome aboard (demo)!'; btn.disabled=false; },800); });
+      form.addEventListener('submit', ()=>{ if(!btn||!out) return; btn.disabled=true; out.textContent='Creating…'; setTimeout(()=>{ out.textContent='Welcome aboard (demo)!'; btn.disabled=false; },800); });
     })();
 
-    // API key demo
-    (function(){
-      const gen=document.getElementById('gen-key'), input=document.getElementById('api-key'), copy=document.getElementById('copy-key'); if(!gen||!input||!copy) return;
-      const rand=(len)=>Array.from(crypto.getRandomValues(new Uint8Array(len))).map(n=>('0'+n.toString(16)).slice(-2)).join('').slice(0,len).toUpperCase();
-      gen.addEventListener('click',()=>{ input.value=`DSP-${rand(8)}-${rand(8)}-${rand(8)}`; });
-      copy.addEventListener('click',async()=>{ if(!input.value) return; try{ await navigator.clipboard.writeText(input.value); copy.textContent='Copied'; setTimeout(()=>copy.textContent='Copy',1200);}catch(e){} });
-    })();
-
-    // Starfield (light/dark aware)
+    // Starfield background
     (function(){
       const canvas = document.getElementById('starfield'); if(!canvas) return;
       const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -713,20 +597,12 @@ GET /api/v1/funding</code></pre>
       function resize(){ const rect = canvas.getBoundingClientRect(); w=rect.width; h=rect.height||520; canvas.width=w*DPR; canvas.height=h*DPR; ctx.setTransform(DPR,0,0,DPR,0,0); init(); }
       function isDark(){ return document.documentElement.getAttribute('data-theme')==='dark'; }
       function init(){ stars = Array.from({length:COUNT},()=>({ x:Math.random()*w, y:Math.random()*h, z:Math.random()*1+.3, r:Math.random()*1.4+.25, hue: Math.random()<.5 ? 215+Math.random()*20 : (Math.random()<.75 ? 160+Math.random()*20 : 300+Math.random()*15) })); draw(0); }
-      function draw(t){
-        ctx.clearRect(0,0,w,h);
-        const alphaBase = isDark()? .35 : .18;
-        for(const s of stars){
-          const x = reduce ? s.x : (s.x + t*(0.05*s.z)) % w;
-          const a = alphaBase + s.z*(isDark()? .45 : .25);
-          ctx.beginPath(); ctx.arc(x, s.y, s.r, 0, Math.PI*2);
-          ctx.fillStyle = `hsla(${s.hue}, 90%, ${isDark()? '85%' : '40%'}, ${a})`; ctx.fill();
-        }
-      }
+      function draw(t){ ctx.clearRect(0,0,w,h); const alphaBase = isDark()? .35 : .18;
+        for(const s of stars){ const x = reduce ? s.x : (s.x + t*(0.05*s.z)) % w; const a = alphaBase + s.z*(isDark()? .45 : .25);
+          ctx.beginPath(); ctx.arc(x, s.y, s.r, 0, Math.PI*2); ctx.fillStyle = `hsla(${s.hue}, 90%, ${isDark()? '85%' : '40%'}, ${a})`; ctx.fill(); } }
       let raf, t=0; function loop(){ t+=1; draw(t); raf=requestAnimationFrame(loop); }
       new ResizeObserver(resize).observe(canvas); resize(); if(!reduce) loop();
       document.addEventListener('visibilitychange',()=>{ if(document.hidden){ cancelAnimationFrame(raf); } else if(!reduce){ loop(); } });
-      // re-render when theme toggles
       new MutationObserver(()=>draw(t)).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
     })();
   </script>
