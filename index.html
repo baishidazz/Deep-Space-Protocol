@@ -2,7 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Deep Space Protocol — Command-grade Liquidity, Zero-lag Execution</title>
   <meta name="description" content="Deep Space Protocol (DSP) is a premium crypto exchange launched in July 2025. Institutional trust, open access. Spot, Perpetuals, Earn, and developer-first APIs." />
   <meta name="theme-color" content="#F7FAFF" />
@@ -18,7 +18,7 @@
         linear-gradient(180deg,#F7FAFF 0%, #EFF5FF 45%, #EAF2FF 100%);
       --text:#0D1326;
       --muted:#4B5877;
-      --surface:#FFFFFFEE;      /* glass on light */
+      --surface:#FFFFFFEE;
       --outline:#D6E2FF;
       --radius:18px;
       --blur:16px;
@@ -43,6 +43,9 @@
       --card-2:#F2F6FF;
       --code-bg:#0B1226;
       --code-ink:#DCE6FF;
+
+      --status-h:38px;
+      --nav-h:56px;
     }
     html[data-theme="dark"]{
       --page-bg:
@@ -52,7 +55,7 @@
         linear-gradient(180deg,#0B1020 0%, #090F1D 45%, #0A0E1A 100%);
       --text:#F2F7FF;
       --muted:#A9B1C7;
-      --surface:#0F1428CC;      /* glass on dark */
+      --surface:#0F1428CC;
       --outline:#1A2747;
       --shadow:0 26px 72px rgba(0,0,0,.55);
       --success-ink:#9FF0C3;
@@ -64,7 +67,9 @@
     }
     @media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
 
-    /* Base */
+    /* ===============================
+       Base
+    =============================== */
     *,*::before,*::after{ box-sizing:border-box }
     html,body{ height:100% }
     body{
@@ -73,17 +78,31 @@
       background: var(--page-bg) !important;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
+    body.lock{ overflow:hidden } /* prevent scroll when mobile menu open */
+
     a{ color:inherit; text-decoration:none }
     img{ max-width:100%; height:auto }
     .container{ width:100%; max-width:var(--container); margin-inline:auto; padding-inline:24px }
+    @media (max-width:768px){ .container{ padding-inline:16px } }
 
-    /* Status bar (like your screenshot) */
-    :root{ --status-h:38px }
+    /* tiny helpers */
+    .only-sm{ display:none }
+    .hide-sm{ display:inline }
+    @media (max-width:680px){
+      .only-sm{ display:inline }
+      .hide-sm{ display:none }
+    }
+
+    /* ===============================
+       Status bar (screenshot-like)
+    =============================== */
     .statusbar{
-      position:sticky; top:0; inset-inline:0; height:var(--status-h);
+      position:sticky; top:0; inset-inline:0;
+      height:calc(var(--status-h) + env(safe-area-inset-top));
+      padding-top:env(safe-area-inset-top);
       display:flex; align-items:center; justify-content:center; gap:10px;
-      background: var(--success-grad); color:var(--success-ink);
-      border-bottom:1px solid rgba(0,0,0,.07);
+      background: var(--success-grad); color: var(--success-ink);
+      border-bottom:1px solid color-mix(in srgb, black 7%, transparent);
       z-index:1002; font-size:14px;
     }
     .statusbar .dot{
@@ -98,15 +117,17 @@
 
     /* thin multi-color rail */
     .accent-rail{
-      position:sticky; top:var(--status-h); height:3px; z-index:1001;
+      position:sticky; top:calc(var(--status-h) + env(safe-area-inset-top)); height:3px; z-index:1001;
       background: linear-gradient(90deg,var(--accent),var(--violet),var(--teal),var(--pink),var(--gold));
       filter: saturate(1.2);
     }
 
-    /* Nav (full menu kept) */
+    /* ===============================
+       Navigation (desktop + mobile)
+    =============================== */
     .nav{
-      position:sticky; top:calc(var(--status-h) + 3px); inset-inline:0; z-index:1000;
-      background: color-mix(in oklab, #fff 55%, transparent);
+      position:sticky; top:calc(var(--status-h) + 3px + env(safe-area-inset-top)); inset-inline:0; z-index:1000;
+      background: color-mix(in oklab, #fff 65%, transparent);
       backdrop-filter: blur(10px);
       border-bottom:1px solid var(--outline);
     }
@@ -118,6 +139,7 @@
       background: radial-gradient(100% 100% at 50% 0%, #9ED1FF, var(--accent) 60%, #1F51FF);
       box-shadow:inset 0 0 10px #fff6, 0 6px 16px rgba(46,107,255,.25);
     }
+
     .nav-links{ display:flex; gap:16px; align-items:center; flex-wrap:wrap }
     .nav-links a{ padding:8px 10px; border-radius:8px; color:var(--muted); font-weight:600 }
     .nav-links a.active, .nav-links a:hover{ color:var(--text); background:#0000000e }
@@ -125,7 +147,31 @@
     .theme-toggle{ margin-left:8px }
     .icon{ width:1.1em; height:1.1em; vertical-align:-2px }
 
-    /* Attention typography helpers (for “显眼的信息”) */
+    /* mobile menu button */
+    .menu-btn{
+      display:none; margin-left:12px; border:1px solid var(--outline); background:transparent; height:40px; padding:0 12px; border-radius:12px; font-weight:800; cursor:pointer;
+    }
+    .menu-btn:focus-visible{ outline:var(--focus); outline-offset:2px }
+    @media (max-width:960px){
+      .menu-btn{ display:inline-flex; align-items:center; gap:8px }
+      .nav-links{ display:none } /* hidden until opened */
+      /* open state -> full-width sheet */
+      .nav-links[data-open="true"]{
+        display:flex; flex-direction:column; align-items:flex-start; gap:8px;
+        position:fixed; left:0; right:0; top:calc(var(--status-h) + var(--nav-h) + 6px + env(safe-area-inset-top));
+        padding:16px; border-top:1px solid var(--outline);
+        background: color-mix(in oklab, var(--card-1) 80%, transparent);
+        backdrop-filter: blur(14px);
+        max-height: 70vh; overflow:auto; -webkit-overflow-scrolling:touch;
+        animation: slideDown .18s ease-out;
+      }
+      @keyframes slideDown{ from{ transform:translateY(-6px); opacity:.0 } to{ transform:none; opacity:1 } }
+      .nav-links a{ display:block; width:100% }
+    }
+
+    /* ===============================
+       Attention typography helpers
+    =============================== */
     .ink-accent{ color:var(--accent) }
     .ink-violet{ color:var(--violet) }
     .ink-teal{ color:var(--teal) }
@@ -142,15 +188,18 @@
       border:1px solid var(--outline); padding:.2rem .5rem; border-radius:10px; font-weight:800;
     }
 
-    /* Hero */
-    .hero{ position:relative; overflow:hidden; padding:92px 0 72px; isolation:isolate }
+    /* ===============================
+       Hero
+    =============================== */
+    .hero{ position:relative; overflow:hidden; padding:96px 0 72px; isolation:isolate }
     #starfield{ position:absolute; inset:0; z-index:-1 }
     .hero-inner{ display:grid; gap:24px; grid-template-columns: 1.2fr .8fr; align-items:center }
     @media (max-width:1020px){ .hero-inner{ grid-template-columns:1fr } }
-    .headline{ font-size: clamp(30px, 4.2vw, 56px); line-height:1.05; font-weight:900; letter-spacing:-.02em; margin:0 }
-    .subhead{ font-size: clamp(16px, 1.4vw, 19px); color:var(--muted); margin:10px 0 18px }
+    .headline{ font-size: clamp(28px, 6.2vw, 56px); line-height:1.05; font-weight:900; letter-spacing:-.02em; margin:0 }
+    .subhead{ font-size: clamp(15px, 1.8vw, 19px); color:var(--muted); margin:10px 0 18px }
     .cta-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:8px }
     .cred-bar{ display:flex; gap:10px; flex-wrap:wrap; margin-top:18px }
+    @media (max-width:560px){ .hero{ padding:72px 0 48px } }
 
     /* UI atoms */
     .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
@@ -168,7 +217,7 @@
 
     /* Sections / Cards */
     section{ padding:64px 0 }
-    .section-h{ font-size: clamp(22px, 2.6vw, 32px); margin:0 0 10px; font-weight:800 }
+    .section-h{ font-size: clamp(20px, 4.2vw, 32px); margin:0 0 10px; font-weight:800 }
     .section-p{ color:var(--muted); margin:0 0 22px }
     .lift{ transition: transform .18s ease, box-shadow .18s ease }
     .lift:hover{ transform: translateY(-2px) }
@@ -177,7 +226,7 @@
 
     /* Inputs */
     input[type="text"], input[type="email"], input[type="password"]{
-      width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--outline); background:#fff; color:#111
+      width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--outline); background:#fff; color:#111
     }
     html[data-theme="dark"] input[type="text"], html[data-theme="dark"] input[type="email"], html[data-theme="dark"] input[type="password"]{
       background:#0f1428; color:#fff
@@ -185,7 +234,8 @@
     label{ font-weight:700 }
 
     /* Tables */
-    .table-wrap{ overflow:auto; border-radius:14px; border:1px solid var(--outline) }
+    .table-wrap{ overflow:auto; border-radius:14px; border:1px solid var(--outline); -webkit-overflow-scrolling:touch; }
+    .table-wrap::after{ content:""; position:sticky; right:0; top:0; bottom:0; width:18px; display:block; float:right; background:linear-gradient(90deg, transparent, color-mix(in srgb, var(--card-1) 80%, transparent)); pointer-events:none }
     table{ width:100%; border-collapse:separate; border-spacing:0; min-width:620px; background:linear-gradient(180deg,var(--card-2),var(--card-1)) }
     th, td{ padding:14px 16px; text-align:left; border-bottom:1px solid var(--outline); color:inherit }
     th{ position:sticky; top:0; background:linear-gradient(180deg,var(--card-2),var(--card-1)); font-weight:800; cursor:pointer }
@@ -200,6 +250,7 @@
     .metric{ padding:18px; border-radius:14px; border:1px dashed var(--outline); background:linear-gradient(180deg, var(--card-2), var(--card-1)) }
     .metric .num{ font-variant-numeric: tabular-nums; font-weight:900; font-size:1.6rem }
     @media (max-width:900px){ .metrics{ grid-template-columns:1fr 1fr } }
+    @media (max-width:560px){ .metrics{ grid-template-columns:1fr } }
 
     /* Footer */
     footer{ border-top:1px solid var(--outline); padding:36px 0 60px; background:linear-gradient(180deg,var(--card-2),var(--card-1)) }
@@ -207,6 +258,7 @@
     .cols a{ color:var(--muted) }
     .legal{ margin-top:16px; color:var(--muted); font-size:.92rem }
     @media (max-width:900px){ .cols{ grid-template-columns:1fr 1fr } }
+    @media (max-width:560px){ .cols{ grid-template-columns:1fr } }
 
     /* Reveal */
     .reveal{ opacity:0; transform: translateY(12px); transition: opacity .6s ease, transform .6s ease }
@@ -216,7 +268,7 @@
   </style>
 </head>
 <body>
-  <!-- subtle grid for texture -->
+  <!-- faint grid texture -->
   <svg aria-hidden="true" style="position:fixed; inset:0; z-index:-1; opacity:.07; mix-blend-mode:multiply" viewBox="0 0 100 100" preserveAspectRatio="none">
     <defs><pattern id="grid24" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M 6 0 L 0 0 0 6" fill="none" stroke="#7890D8" stroke-width=".2"/></pattern></defs>
     <rect width="100%" height="100%" fill="url(#grid24)"/>
@@ -225,22 +277,25 @@
   <!-- STATUS BAR -->
   <div class="statusbar" role="status" aria-live="polite">
     <span class="dot" aria-hidden="true"></span>
-    <strong>All systems operational</strong>
+    <strong class="hide-sm">All systems operational</strong>
+    <strong class="only-sm">Operational</strong>
     <span class="sep">—</span>
-    <span>90d uptime <b class="ink-teal">99.99%</b> <em>(demo)</em></span>
+    <span class="hide-sm">90d uptime <b class="ink-teal">99.99%</b> <em>(demo)</em></span>
+    <span class="only-sm"><b class="ink-teal">99.99%</b> · 90d <em>(demo)</em></span>
     <span class="sep">·</span>
     <a href="#status">View status</a>
   </div>
   <div class="accent-rail" aria-hidden="true"></div>
 
-  <!-- NAV (full) -->
+  <!-- NAV -->
   <nav class="nav" aria-label="Primary">
     <div class="container nav-wrap">
       <div class="brand">
         <span class="brand-dot" aria-hidden="true"></span>
         <span aria-label="Deep Space Protocol">Deep Space Protocol</span>
       </div>
-      <div class="nav-links">
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobileMenu">Menu</button>
+      <div id="mobileMenu" class="nav-links" data-open="false">
         <a href="#products">Products</a>
         <a href="#fees">Fees</a>
         <a href="#security">Security</a>
@@ -543,25 +598,33 @@ GET /api/v1/funding</code></pre>
   </footer>
 
   <script>
-    // Theme toggle (works for whole page + icon swap)
+    // Mobile menu toggle
+    (function(){
+      const btn = document.querySelector('.menu-btn');
+      const menu = document.getElementById('mobileMenu');
+      if(!btn || !menu) return;
+      const open = (v)=>{ menu.dataset.open = String(v); btn.setAttribute('aria-expanded', String(v)); document.body.classList.toggle('lock', v); };
+      btn.addEventListener('click', ()=> open(menu.dataset.open !== 'true'));
+      // close on link click (for in-page anchors)
+      menu.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>open(false)));
+      // close on Escape
+      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') open(false); });
+    })();
+
+    // Theme toggle (global)
     (function(){
       const btn = document.querySelector('.theme-toggle');
-      const label = btn.querySelector('span');
+      const label = btn?.querySelector('span');
       const use = document.getElementById('theme-use');
       const root = document.documentElement;
       const saved = localStorage.getItem('theme');
-      if(saved){
-        root.setAttribute('data-theme', saved);
-        btn.setAttribute('aria-pressed', saved==='dark');
-        label.textContent = saved==='dark' ? 'Light mode' : 'Dark mode';
-        use?.setAttribute('href', saved==='dark' ? '#icon-sun' : '#icon-moon');
-      }
-      btn.addEventListener('click', () => {
+      if(saved){ root.setAttribute('data-theme', saved); btn?.setAttribute('aria-pressed', saved==='dark'); label && (label.textContent = saved==='dark' ? 'Light mode' : 'Dark mode'); use?.setAttribute('href', saved==='dark' ? '#icon-sun' : '#icon-moon'); }
+      btn?.addEventListener('click', () => {
         const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         root.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);
-        btn.setAttribute('aria-pressed', next==='dark');
-        label.textContent = next==='dark' ? 'Light mode' : 'Dark mode';
+        btn.setAttribute('aria-pressed', String(next==='dark'));
+        if(label) label.textContent = next==='dark' ? 'Light mode' : 'Dark mode';
         use?.setAttribute('href', next==='dark' ? '#icon-sun' : '#icon-moon');
       });
     })();
